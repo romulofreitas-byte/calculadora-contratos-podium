@@ -457,10 +457,10 @@ class CalculadoraPodium {
         // Obter valores dos inputs
         const meta = this.extrairValorNumerico(this.metaInput);
         const ticket = this.extrairValorNumerico(this.ticketInput);
-        const taxa1 = parseFloat(this.taxa1Input.value) / 100 || 0.3;
+        const taxa1 = parseFloat(this.taxa1Input.value) / 100 || 0.2;
         const taxa2 = parseFloat(this.taxa2Input.value) / 100 || 0.7;
         const taxa3 = parseFloat(this.taxa3Input.value) / 100 || 0.8;
-        const taxa4 = parseFloat(this.taxa4Input.value) / 100 || 0.75;
+        const taxa4 = parseFloat(this.taxa4Input.value) / 100 || 0.5;
         
         // Realizar cálculos
         const projetos = Math.ceil(meta / ticket);
@@ -545,10 +545,10 @@ class CalculadoraPodium {
                 const parsed = JSON.parse(dados);
                 this.metaInput.value = this.formatarMoedaInputValue(parsed.meta || 20000);
                 this.ticketInput.value = this.formatarMoedaInputValue(parsed.ticket || 5000);
-                this.taxa1Input.value = parsed.taxa1 || 30;
+                this.taxa1Input.value = parsed.taxa1 || 20;
                 this.taxa2Input.value = parsed.taxa2 || 70;
                 this.taxa3Input.value = parsed.taxa3 || 80;
-                this.taxa4Input.value = parsed.taxa4 || 75;
+                this.taxa4Input.value = parsed.taxa4 || 50;
             }
         } catch (e) {
             console.warn('Não foi possível carregar os dados do localStorage:', e);
@@ -561,10 +561,10 @@ class CalculadoraPodium {
     resetar() {
         this.metaInput.value = this.formatarMoedaInputValue(20000);
         this.ticketInput.value = this.formatarMoedaInputValue(5000);
-        this.taxa1Input.value = 30;
+        this.taxa1Input.value = 20;
         this.taxa2Input.value = 70;
         this.taxa3Input.value = 80;
-        this.taxa4Input.value = 75;
+        this.taxa4Input.value = 50;
         this.calcular();
     }
     
