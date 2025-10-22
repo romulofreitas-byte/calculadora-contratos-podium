@@ -11,7 +11,11 @@
 function getEnvVar(name, defaultValue = null) {
     // No Vercel, as variáveis são injetadas automaticamente
     // Para desenvolvimento local, você pode usar um arquivo .env
-    return window[`__ENV_${name}`] || defaultValue;
+    // Tentar diferentes formas de acessar as variáveis
+    return process?.env?.[name] || 
+           window?.[`__ENV_${name}`] || 
+           window?.[name] || 
+           defaultValue;
 }
 
 const SUPABASE_CONFIG = {
@@ -24,6 +28,12 @@ const SUPABASE_CONFIG = {
     // Nome da tabela
     TABLE_NAME: 'leads'
 };
+
+// Debug: Log das variáveis de ambiente
+console.log('🔍 Debug - Variáveis de ambiente:');
+console.log('VITE_SUPABASE_URL:', getEnvVar('VITE_SUPABASE_URL', 'NÃO ENCONTRADA'));
+console.log('VITE_SUPABASE_ANON_KEY:', getEnvVar('VITE_SUPABASE_ANON_KEY', 'NÃO ENCONTRADA'));
+console.log('SUPABASE_CONFIG:', SUPABASE_CONFIG);
 
 // Expor configuração para o window object (necessário para script.js)
 window.SUPABASE_CONFIG = SUPABASE_CONFIG;
