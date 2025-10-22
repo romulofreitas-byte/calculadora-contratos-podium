@@ -123,10 +123,32 @@ class CapturadeLeads {
             } else {
                 const error = await response.json();
                 console.error('❌ Erro ao enviar lead para Supabase:', error);
+                
+                // Tratar erros específicos de segurança
+                if (response.status === 429) {
+                    throw new Error('RATE_LIMIT_EXCEEDED');
+                } else if (response.status === 400 && error.message) {
+                    if (error.message.includes('rate limit')) {
+                        throw new Error('RATE_LIMIT_EXCEEDED');
+                    } else if (error.message.includes('email') || error.message.includes('domain')) {
+                        throw new Error('EMAIL_DOMAIN_BLOCKED');
+                    } else if (error.message.includes('validation') || error.message.includes('invalid')) {
+                        throw new Error('VALIDATION_FAILED');
+                    }
+                }
+                
                 return false;
             }
         } catch (error) {
             console.error('❌ Erro ao conectar com Supabase:', error);
+            
+            // Re-lançar erros específicos para tratamento no frontend
+            if (error.message === 'RATE_LIMIT_EXCEEDED' || 
+                error.message === 'EMAIL_DOMAIN_BLOCKED' || 
+                error.message === 'VALIDATION_FAILED') {
+                throw error;
+            }
+            
             return false;
         }
     }
@@ -171,24 +193,40 @@ class CapturadeLeads {
         botao.textContent = '⏳ Enviando...';
         botao.disabled = true;
         
-        // Salvar lead localmente
-        this.salvarLeadLocal(dados);
-        
-        // Enviar para Supabase
-        const enviado = await this.enviarParaSupabase(dados);
-        
-        // Restaurar botão
-        botao.textContent = textoOriginal;
-        botao.disabled = false;
-        
-        // Esconder modal
-        this.esconderModal();
-        
-        // Mostrar mensagem de sucesso
-        if (enviado) {
-            alert('Bem-vindo ao Mundo Pódium! 🏁\n\nAcesse a calculadora e comece a planejar seu faturamento.');
-        } else {
-            alert('Bem-vindo ao Mundo Pódium! 🏁\n\n(Nota: Houve um problema ao enviar seus dados, mas você pode continuar usando a calculadora)');
+        try {
+            // Salvar lead localmente
+            this.salvarLeadLocal(dados);
+            
+            // Enviar para Supabase
+            const enviado = await this.enviarParaSupabase(dados);
+            
+            // Esconder modal
+            this.esconderModal();
+            
+            // Mostrar mensagem de sucesso
+            if (enviado) {
+                alert('Bem-vindo ao Mundo Pódium! 🏁\n\nAcesse a calculadora e comece a planejar seu faturamento.');
+            } else {
+                alert('Bem-vindo ao Mundo Pódium! 🏁\n\n(Nota: Houve um problema ao enviar seus dados, mas você pode continuar usando a calculadora)');
+            }
+        } catch (error) {
+            // Tratar erros específicos de segurança
+            if (error.message === 'RATE_LIMIT_EXCEEDED') {
+                alert('⏰ Limite de envios atingido!\n\nVocê já enviou dados recentemente. Aguarde 1 hora antes de tentar novamente.\n\nPor enquanto, você pode continuar usando a calculadora.');
+            } else if (error.message === 'EMAIL_DOMAIN_BLOCKED') {
+                alert('📧 Email temporário detectado!\n\nPor favor, use um email válido (Gmail, Outlook, etc.) para continuar.\n\nEmails temporários são bloqueados por segurança.');
+            } else if (error.message === 'VALIDATION_FAILED') {
+                alert('❌ Dados inválidos!\n\nVerifique se:\n• Nome tem pelo menos 3 caracteres\n• Telefone está no formato (XX) XXXXX-XXXX\n• Email está correto\n\nTente novamente com dados válidos.');
+            } else {
+                alert('❌ Erro inesperado!\n\nHouve um problema ao enviar seus dados. Tente novamente em alguns minutos.\n\nPor enquanto, você pode continuar usando a calculadora.');
+            }
+            
+            // Esconder modal mesmo com erro
+            this.esconderModal();
+        } finally {
+            // Restaurar botão
+            botao.textContent = textoOriginal;
+            botao.disabled = false;
         }
     }
     

@@ -60,15 +60,24 @@ CREATE INDEX idx_leads_data ON leads(data_captura);
 4. Clique em **"Run"** (botão azul)
 5. Você verá a mensagem "Success" se tudo deu certo
 
-### PASSO 4: Configurar Permissões (RLS)
+### PASSO 4: Configurar Políticas de Segurança (RLS)
 
-1. Clique em **"Authentication"** (menu lateral)
-2. Clique em **"Policies"**
-3. Procure pela tabela **"leads"**
-4. Clique em **"New Policy"**
-5. Escolha **"For INSERT"**
-6. Deixe como **"Allow all"** (para aceitar dados de qualquer lugar)
-7. Clique em **"Save"**
+**⚠️ IMPORTANTE:** Este passo implementa políticas de segurança robustas para proteger seus dados contra spam e abuso.
+
+1. Clique em **"SQL Editor"** (menu lateral)
+2. Clique em **"New Query"**
+3. Copie todo o conteúdo do arquivo `supabase-security-policies.sql` (criado na raiz do projeto)
+4. Cole o código SQL no editor
+5. Clique em **"Run"** (botão azul)
+6. Você verá mensagens de sucesso se tudo foi aplicado corretamente
+
+**🔐 O que este script implementa:**
+- ✅ **Row Level Security (RLS)** habilitado
+- ✅ **INSERT público** permitido (captura de leads)
+- ✅ **SELECT/UPDATE/DELETE negados** para usuários anônimos
+- ✅ **Rate limiting** (máximo 3 envios por IP por hora)
+- ✅ **Validação de email** (bloqueia domínios descartáveis)
+- ✅ **Triggers de validação** automáticos
 
 ### PASSO 5: Obter as Credenciais
 
@@ -135,14 +144,47 @@ const SUPABASE_CONFIG = {
 
 ## 🔐 SEGURANÇA
 
+### Políticas de Segurança Implementadas
+
+A calculadora agora possui **políticas de segurança robustas** que protegem contra:
+
+#### 🛡️ Rate Limiting
+- **Máximo 3 envios por IP por hora**
+- Previne spam e ataques automatizados
+- Mensagem amigável quando limite é atingido
+
+#### 📧 Validação de Email
+- **Bloqueia domínios descartáveis** (tempmail.org, 10minutemail.com, etc.)
+- Lista com mais de 100 domínios temporários conhecidos
+- Validação de formato de email
+
+#### 🔒 Row Level Security (RLS)
+- **INSERT público** - Qualquer um pode enviar leads
+- **SELECT/UPDATE/DELETE negados** - Dados só visíveis no Dashboard
+- **Triggers de validação** - Verificações automáticas antes do INSERT
+
+#### ✅ Validações Automáticas
+- **Nome:** Mínimo 3 caracteres, não pode ser só números
+- **Telefone:** Formato válido com pelo menos 10 dígitos
+- **Email:** Formato válido + domínio não descartável
+- **Timestamps:** Definidos automaticamente
+
 ### Chave Pública vs Chave Privada
 
-- **anon public (usada na calculadora):** Segura para usar no frontend
-- **service_role (NÃO use no frontend):** Use apenas no backend
+- **anon public (usada na calculadora):** Segura para usar no frontend com RLS
+- **service_role (NÃO use no frontend):** Use apenas no backend/admin
 
-### Proteção de Dados
+### Personalização das Políticas
 
-O Supabase usa **Row Level Security (RLS)** para proteger seus dados. Você pode configurar quem pode ler/escrever em cada tabela.
+Para ajustar as configurações de segurança, edite o arquivo `supabase-security-policies.sql`:
+
+```sql
+-- Alterar limite de rate limiting (padrão: 3 envios/hora)
+check_rate_limit(ip_address, 5, '1 hour')  -- 5 envios por hora
+
+-- Adicionar novos domínios descartáveis
+'novodominio.com', 'outrodescartavel.net'
+```
 
 ---
 
@@ -189,6 +231,7 @@ GROUP BY SPLIT_PART(email, '@', 2);
 
 **Solução 1:** Verifique o console (F12 → Console)
 - Se vir erro de CORS, configure as permissões no Supabase
+- Se vir erro de rate limiting, aguarde 1 hora ou use outro IP
 
 **Solução 2:** Verifique a configuração em `config.js`
 - URL e ANON_KEY estão corretos?
@@ -197,6 +240,10 @@ GROUP BY SPLIT_PART(email, '@', 2);
 **Solução 3:** Verifique se a tabela existe
 - No Supabase, vá em "Table Editor"
 - A tabela "leads" está lá?
+
+**Solução 4:** Verifique as políticas de segurança
+- As políticas RLS foram aplicadas corretamente?
+- Execute o script `supabase-security-policies.sql` novamente
 
 ### Erro: "Invalid API Key"
 
@@ -211,6 +258,27 @@ GROUP BY SPLIT_PART(email, '@', 2);
 1. Vá em Settings → API
 2. Procure por "CORS"
 3. Adicione sua URL do Vercel
+
+### Erro: "Rate limit exceeded"
+
+**Solução:** Limite de envios atingido
+- Máximo 3 envios por IP por hora
+- Aguarde 1 hora ou teste de outro dispositivo/rede
+- Para desenvolvimento, ajuste o limite no SQL
+
+### Erro: "Email domain not allowed"
+
+**Solução:** Email descartável detectado
+- Use um email válido (Gmail, Outlook, etc.)
+- Domínios temporários são bloqueados por segurança
+- Para desenvolvimento, remova o domínio da lista no SQL
+
+### Erro: "Validation failed"
+
+**Solução:** Dados inválidos
+- **Nome:** Mínimo 3 caracteres, não pode ser só números
+- **Telefone:** Use formato (XX) XXXXX-XXXX
+- **Email:** Formato válido (usuario@dominio.com)
 
 ---
 
@@ -302,7 +370,10 @@ Para melhor performance:
 - [ ] Conta Supabase criada
 - [ ] Projeto Supabase criado
 - [ ] Tabela "leads" criada
-- [ ] RLS configurado
+- [ ] **Políticas de segurança aplicadas** (supabase-security-policies.sql)
+- [ ] RLS habilitado e funcionando
+- [ ] Rate limiting testado
+- [ ] Validação de email testada
 - [ ] Credenciais obtidas
 - [ ] `config.js` preenchido
 - [ ] Testado localmente
