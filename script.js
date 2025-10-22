@@ -652,7 +652,92 @@ document.addEventListener('DOMContentLoaded', () => {
     // Expor métodos globais para uso em HTML (opcional)
     window.calculadora = calculadora;
     window.capturaLeads = capturaLeads;
+    
+    // Inicializar Vercel Analytics
+    inicializarVercelAnalytics();
 });
+
+/**
+ * Inicializa o Vercel Analytics e configura eventos personalizados
+ */
+function inicializarVercelAnalytics() {
+    // Verificar se o Analytics está disponível
+    if (typeof window.va === 'function') {
+        console.log('✅ Vercel Analytics inicializado');
+        
+        // Track page view
+        window.va('track', 'Page View', {
+            page: window.location.pathname,
+            title: document.title
+        });
+        
+        // Track calculator usage
+        trackCalculatorUsage();
+        
+        // Track lead capture events
+        trackLeadCaptureEvents();
+    } else {
+        console.warn('⚠️ Vercel Analytics não está disponível');
+    }
+}
+
+/**
+ * Configura tracking de uso da calculadora
+ */
+function trackCalculatorUsage() {
+    // Track quando valores são alterados
+    const inputs = ['meta', 'ticket', 'taxa1', 'taxa2', 'taxa3', 'taxa4'];
+    
+    inputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if (input) {
+            input.addEventListener('change', () => {
+                if (typeof window.va === 'function') {
+                    window.va('track', 'Calculator Input Changed', {
+                        input: inputId,
+                        value: input.value
+                    });
+                }
+            });
+        }
+    });
+}
+
+/**
+ * Configura tracking de eventos de captura de leads
+ */
+function trackLeadCaptureEvents() {
+    const form = document.getElementById('leadForm');
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            if (typeof window.va === 'function') {
+                window.va('track', 'Lead Form Submitted', {
+                    form: 'lead-capture-modal'
+                });
+            }
+        });
+    }
+    
+    const whatsappButton = document.querySelector('.btn-whatsapp');
+    if (whatsappButton) {
+        whatsappButton.addEventListener('click', () => {
+            if (typeof window.va === 'function') {
+                window.va('track', 'WhatsApp Community Click', {
+                    source: 'footer-section'
+                });
+            }
+        });
+    }
+}
+
+/**
+ * Função para trackar eventos personalizados
+ */
+function trackEvent(eventName, properties = {}) {
+    if (typeof window.va === 'function') {
+        window.va('track', eventName, properties);
+    }
+}
 
 /**
  * Funções auxiliares globais

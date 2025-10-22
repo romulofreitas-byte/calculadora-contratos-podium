@@ -1,0 +1,31 @@
+{
+  "name": "calculadora-contratos-podium",
+  "version": "2.1.0",
+  "description": "Calculadora de Contratos Pódium - Ferramenta de Previsibilidade Comercial",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve . -l 3000",
+    "build": "echo 'Build completed'",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [
+    "calculadora",
+    "contratos",
+    "vendas",
+    "podium",
+    "comercial",
+    "previsibilidade"
+  ],
+  "author": "Rômulo Freitas",
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/analytics": "^1.2.1"
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
