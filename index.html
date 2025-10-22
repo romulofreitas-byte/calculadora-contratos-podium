@@ -15,7 +15,7 @@
         
         <div class="section">
             <div class="instructions">
-                <p><strong>📋 INSTRUÇÕES DE USO:</strong> Preencha os campos em AMARELO com suas informações reais. A calculadora determinará automaticamente quantas ligações você precisa fazer para atingir sua meta de faturamento até dezembro.</p>
+                <p><strong>📋 INSTRUÇÕES DE USO:</strong> Preencha os campos em AMARELO com suas informações reais. A calculadora determinará automaticamente quantas ligações você precisa fazer para atingir sua meta de faturamento no período escolhido (seja para uma semana, mês, trimestre ou ano).</p>
             </div>
         </div>
         
@@ -24,9 +24,9 @@
             
             <div class="input-group">
                 <div class="input-item">
-                    <label for="meta">Meta de Faturamento (R$)</label>
+                    <label for="meta">Meta de Faturamento no Período (R$)</label>
                     <input type="number" id="meta" value="20000" step="1000">
-                    <div class="input-description">Quanto você quer faturar até dezembro?</div>
+                    <div class="input-description">Quanto você quer faturar no período desejado?</div>
                 </div>
                 
                 <div class="input-item">
@@ -57,19 +57,19 @@
                 <div class="input-item">
                     <label for="taxa1">Ligações → R1 Agendada (%)</label>
                     <input type="number" id="taxa1" value="30" min="1" max="100" step="5">
-                    <div class="input-description">De cada 10 ligações efetivadas, quantas viram reuniões R1?</div>
+                    <div class="input-description">De cada 10 ligações efetivadas, quantas viram reuniões R1 realizadas?</div>
                 </div>
                 
                 <div class="input-item">
                     <label for="taxa2">R1 → R2 Agendada (%)</label>
                     <input type="number" id="taxa2" value="70" min="1" max="100" step="5">
-                    <div class="input-description">De cada 10 R1s realizadas, quantas viram R2?</div>
+                    <div class="input-description">De cada 10 R1s realizadas (não no-shows), quantas viram R2?</div>
                 </div>
                 
                 <div class="input-item">
                     <label for="taxa3">R2 → Negociação (%)</label>
                     <input type="number" id="taxa3" value="80" min="1" max="100" step="5">
-                    <div class="input-description">De cada 10 R2s realizadas, quantas entram em negociação?</div>
+                    <div class="input-description">De cada 10 R2s realizadas (não no-shows), quantas entram em negociação?</div>
                 </div>
                 
                 <div class="input-item">
@@ -143,9 +143,9 @@
             <h2>🎯 RESULTADO FINAL</h2>
             <p>Você precisa fazer</p>
             <div class="result-number"><span id="resultado">33</span></div>
-            <p>ligações efetivadas para fechar sua meta de faturamento</p>
+            <p>ligações efetivadas para fechar sua meta de faturamento no período escolhido</p>
             <div class="result-description">
-                <p><strong>Meta:</strong> R$ <span id="meta-display">20.000</span></p>
+                <p><strong>Meta do Período:</strong> R$ <span id="meta-display">20.000</span></p>
                 <p><strong>Ticket Médio:</strong> R$ <span id="ticket-display">5.000</span></p>
                 <p><strong>Contratos:</strong> <span id="contratos-display">4</span></p>
             </div>
