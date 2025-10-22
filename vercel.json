@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "calculadora-contratos-podium",
   "builds": [
     {
       "src": "index.html",
@@ -11,28 +10,6 @@
     {
       "src": "/(.*)",
       "dest": "/$1"
-    }
-  ],
-  "outputDirectory": ".",
-  "functions": {},
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
-      "source": "index.html",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        }
-      ]
     }
   ]
 }
