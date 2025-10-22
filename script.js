@@ -312,8 +312,8 @@ class CalculadoraPodium {
      */
     init() {
         // Adicionar listeners para recalcular quando os valores mudam
-        this.metaInput.addEventListener('input', () => this.calcular());
-        this.ticketInput.addEventListener('input', () => this.calcular());
+        this.metaInput.addEventListener('input', (e) => this.formatarMoedaInput(e, this.metaInput));
+        this.ticketInput.addEventListener('input', (e) => this.formatarMoedaInput(e, this.ticketInput));
         this.taxa1Input.addEventListener('input', () => this.calcular());
         this.taxa2Input.addEventListener('input', () => this.calcular());
         this.taxa3Input.addEventListener('input', () => this.calcular());
@@ -327,12 +327,53 @@ class CalculadoraPodium {
     }
     
     /**
+     * Formata o input de moeda brasileira
+     */
+    formatarMoedaInput(event, input) {
+        let valor = event.target.value.replace(/\D/g, '');
+        
+        if (valor === '') {
+            input.value = '';
+            this.calcular();
+            return;
+        }
+        
+        // Converter para número e formatar
+        const numero = parseInt(valor);
+        const formatado = this.formatarMoedaInputValue(numero);
+        input.value = formatado;
+        
+        // Recalcular
+        this.calcular();
+    }
+    
+    /**
+     * Formata um valor numérico para moeda brasileira no input
+     */
+    formatarMoedaInputValue(valor) {
+        return valor.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
+    }
+    
+    /**
+     * Extrai o valor numérico de um input formatado
+     */
+    extrairValorNumerico(input) {
+        const valor = input.value.replace(/[^\d]/g, '');
+        return valor === '' ? 0 : parseInt(valor);
+    }
+    
+    /**
      * Função principal de cálculo
      */
     calcular() {
         // Obter valores dos inputs
-        const meta = parseFloat(this.metaInput.value) || 0;
-        const ticket = parseFloat(this.ticketInput.value) || 1;
+        const meta = this.extrairValorNumerico(this.metaInput);
+        const ticket = this.extrairValorNumerico(this.ticketInput);
         const taxa1 = parseFloat(this.taxa1Input.value) / 100 || 0.3;
         const taxa2 = parseFloat(this.taxa2Input.value) / 100 || 0.7;
         const taxa3 = parseFloat(this.taxa3Input.value) / 100 || 0.8;
@@ -419,8 +460,8 @@ class CalculadoraPodium {
             const dados = localStorage.getItem('calculadora-podium-dados');
             if (dados) {
                 const parsed = JSON.parse(dados);
-                this.metaInput.value = parsed.meta || 20000;
-                this.ticketInput.value = parsed.ticket || 5000;
+                this.metaInput.value = this.formatarMoedaInputValue(parsed.meta || 20000);
+                this.ticketInput.value = this.formatarMoedaInputValue(parsed.ticket || 5000);
                 this.taxa1Input.value = parsed.taxa1 || 30;
                 this.taxa2Input.value = parsed.taxa2 || 70;
                 this.taxa3Input.value = parsed.taxa3 || 80;
@@ -435,8 +476,8 @@ class CalculadoraPodium {
      * Reseta todos os valores para os padrões
      */
     resetar() {
-        this.metaInput.value = 20000;
-        this.ticketInput.value = 5000;
+        this.metaInput.value = this.formatarMoedaInputValue(20000);
+        this.ticketInput.value = this.formatarMoedaInputValue(5000);
         this.taxa1Input.value = 30;
         this.taxa2Input.value = 70;
         this.taxa3Input.value = 80;
@@ -496,8 +537,8 @@ class CalculadoraPodium {
     carregarDadosDaURL() {
         const params = new URLSearchParams(window.location.search);
         
-        if (params.has('meta')) this.metaInput.value = params.get('meta');
-        if (params.has('ticket')) this.ticketInput.value = params.get('ticket');
+        if (params.has('meta')) this.metaInput.value = this.formatarMoedaInputValue(parseInt(params.get('meta')));
+        if (params.has('ticket')) this.ticketInput.value = this.formatarMoedaInputValue(parseInt(params.get('ticket')));
         if (params.has('taxa1')) this.taxa1Input.value = params.get('taxa1');
         if (params.has('taxa2')) this.taxa2Input.value = params.get('taxa2');
         if (params.has('taxa3')) this.taxa3Input.value = params.get('taxa3');

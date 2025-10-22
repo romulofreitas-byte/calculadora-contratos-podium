@@ -25,13 +25,13 @@
             <div class="input-group">
                 <div class="input-item">
                     <label for="meta">Meta de Faturamento no Período (R$)</label>
-                    <input type="number" id="meta" value="20000" step="1000">
+                    <input type="text" id="meta" value="R$ 20.000" step="1000">
                     <div class="input-description">Quanto você quer faturar no período desejado?</div>
                 </div>
                 
                 <div class="input-item">
                     <label for="ticket">Ticket Médio do Projeto (R$)</label>
-                    <input type="number" id="ticket" value="5000" step="500">
+                    <input type="text" id="ticket" value="R$ 5.000" step="500">
                     <div class="input-description">Qual é o valor médio de um projeto que você fecha?</div>
                 </div>
             </div>
@@ -61,7 +61,7 @@
                 </div>
                 
                 <div class="input-item">
-                    <label for="taxa2">R1 → R2 Agendada (%)</label>
+                    <label for="taxa2">R1 → R2 Realizada (%)</label>
                     <input type="number" id="taxa2" value="70" min="1" max="100" step="5">
                     <div class="input-description">De cada 10 R1s realizadas (não no-shows), quantas viram R2?</div>
                 </div>
@@ -91,7 +91,7 @@
                     <td>Ligações que viram reuniões de levantamento de necessidades</td>
                 </tr>
                 <tr>
-                    <td>R1 Realizada → R2 Agendada</td>
+                    <td>R1 Realizada → R2 Realizada</td>
                     <td><span id="taxa2-display">70</span>%</td>
                     <td>R1s que avançaram para reunião de apresentação de proposta</td>
                 </tr>
@@ -148,6 +148,52 @@
                 <p><strong>Meta do Período:</strong> R$ <span id="meta-display">20.000</span></p>
                 <p><strong>Ticket Médio:</strong> R$ <span id="ticket-display">5.000</span></p>
                 <p><strong>Contratos:</strong> <span id="contratos-display">4</span></p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">📚 GLOSSÁRIO DE TERMOS</div>
+            
+            <div class="glossary">
+                <div class="glossary-item">
+                    <h4>🏁 R1 (Reunião 1)</h4>
+                    <p><strong>Reunião de Levantamento de Necessidades</strong> - Primeira reunião comercial onde você descobre as dores, necessidades e desafios do cliente potencial. É aqui que você faz as perguntas certas para entender se há um fit entre sua solução e o problema do cliente.</p>
+                </div>
+                
+                <div class="glossary-item">
+                    <h4>🎯 R2 (Reunião 2)</h4>
+                    <p><strong>Reunião de Apresentação de Proposta</strong> - Segunda reunião comercial onde você apresenta sua solução, proposta comercial e negocia os termos. É aqui que você "fecha" o cliente com base nas necessidades identificadas na R1.</p>
+                </div>
+                
+                <div class="glossary-item">
+                    <h4>📞 Ligações Efetivadas</h4>
+                    <p><strong>Ligações que Resultaram em Conversa</strong> - São aquelas ligações onde você conseguiu falar diretamente com a pessoa certa. NÃO contam: chamadas perdidas, atendimentos por secretárias, voicemails ou mensagens deixadas.</p>
+                </div>
+                
+                <div class="glossary-item">
+                    <h4>💰 Ticket Médio</h4>
+                    <p><strong>Valor Médio de um Projeto</strong> - É o valor médio que você recebe por projeto/contrato fechado. Use este valor para calcular quantos projetos precisa fechar para atingir sua meta de faturamento.</p>
+                </div>
+                
+                <div class="glossary-item">
+                    <h4>🎯 Meta de Faturamento</h4>
+                    <p><strong>Valor que Você Quer Faturar</strong> - É o valor total que você quer receber no período escolhido (semana, mês, trimestre ou ano). Pode ser baseado em suas despesas, objetivos pessoais ou metas da empresa.</p>
+                </div>
+                
+                <div class="glossary-item">
+                    <h4>📊 Taxa de Conversão</h4>
+                    <p><strong>Percentual de Sucesso em Cada Etapa</strong> - É a porcentagem de pessoas que avançam de uma etapa para a próxima no seu funil comercial. Por exemplo: se de 10 ligações, 3 viram R1, sua taxa de conversão é 30%.</p>
+                </div>
+                
+                <div class="glossary-item">
+                    <h4>🔄 Cálculo Regressivo</h4>
+                    <p><strong>Contagem de Trás para Frente</strong> - Método usado para descobrir quantas ações você precisa fazer para atingir sua meta. Começa pelo resultado desejado (contratos) e vai calculando quantas ações anteriores são necessárias.</p>
+                </div>
+                
+                <div class="glossary-item">
+                    <h4>🏁 Método Pódium</h4>
+                    <p><strong>Sistema de Vendas Estruturado</strong> - Metodologia comercial que organiza o processo de vendas em etapas claras e mensuráveis, permitindo previsibilidade e controle sobre os resultados comerciais.</p>
+                </div>
             </div>
         </div>
         
