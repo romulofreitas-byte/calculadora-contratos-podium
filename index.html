@@ -282,5 +282,24 @@
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
     <script defer src="/_vercel/insights/script.js"></script>
+    
+    <!-- Fallback Analytics Script -->
+    <script>
+        // Verificar se o Analytics carregou após 3 segundos
+        setTimeout(() => {
+            if (typeof window.va !== 'function') {
+                console.warn('⚠️ Vercel Analytics não carregou automaticamente');
+                console.log('📊 Tentando carregar manualmente...');
+                
+                // Tentar carregar o script manualmente
+                const script = document.createElement('script');
+                script.src = '/_vercel/insights/script.js';
+                script.defer = true;
+                document.head.appendChild(script);
+            } else {
+                console.log('✅ Vercel Analytics carregado com sucesso');
+            }
+        }, 3000);
+    </script>
 </body>
 </html>
