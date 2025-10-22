@@ -183,7 +183,7 @@ class CapturadeLeads {
         
         // Validar dados
         if (!this.validarDados(dados)) {
-            alert('Por favor, preencha todos os campos corretamente.');
+            alert('Por favor, use dados reais.');
             return;
         }
         
@@ -248,6 +248,89 @@ class CapturadeLeads {
         // Validar email
         const emailPadrao = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPadrao.test(dados.email)) {
+            return false;
+        }
+        
+        // Validar dados de teste
+        if (!this.validarNome(dados.nome) || 
+            !this.validarEmailTeste(dados.email) || 
+            !this.validarTelefone(dados.telefone)) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Valida se o nome não contém padrões de teste
+     */
+    validarNome(nome) {
+        const nomeLower = nome.toLowerCase().trim();
+        const padroesTeste = [
+            'teste', 'test', 'demo', 'exemplo', 'exemplo', 'fulano', 
+            'beltrano', 'ciclano', 'joão', 'maria', 'josé', 'ana',
+            'abc', 'xyz', '123', 'sample', 'amostra', 'fake', 'falso'
+        ];
+        
+        return !padroesTeste.some(padrao => nomeLower.includes(padrao));
+    }
+    
+    /**
+     * Valida se o email não contém padrões de teste ou domínios temporários
+     */
+    validarEmailTeste(email) {
+        const emailLower = email.toLowerCase();
+        
+        // Padrões de teste no email
+        const padroesTeste = [
+            'teste', 'test', 'demo', 'exemplo', 'example', 'noreply', 
+            'no-reply', 'sample', 'fake', 'falso', 'abc', 'xyz'
+        ];
+        
+        // Verificar se contém padrões de teste
+        if (padroesTeste.some(padrao => emailLower.includes(padrao))) {
+            return false;
+        }
+        
+        // Domínios de teste e temporários
+        const dominiosBloqueados = [
+            'teste.com', 'test.com', 'example.com', 'example.org', 
+            'example.net', 'test.org', 'demo.com', 'sample.com',
+            '10minutemail.com', 'tempmail.org', 'guerrillamail.com',
+            'mailinator.com', 'throwaway.email', 'temp-mail.org',
+            'getnada.com', 'maildrop.cc', 'sharklasers.com'
+        ];
+        
+        const dominio = emailLower.split('@')[1];
+        return !dominiosBloqueados.includes(dominio);
+    }
+    
+    /**
+     * Valida se o telefone não contém padrões de teste
+     */
+    validarTelefone(telefone) {
+        // Extrair apenas os números do telefone
+        const numeros = telefone.replace(/\D/g, '');
+        
+        // Verificar se todos os dígitos são iguais (11111, 22222, etc.)
+        if (/^(\d)\1+$/.test(numeros)) {
+            return false;
+        }
+        
+        // Verificar sequências óbvias (12345, 54321, etc.)
+        const sequenciasBloqueadas = [
+            '1234567890', '0987654321', '123456789', '987654321',
+            '12345678', '87654321', '1234567', '7654321',
+            '123456', '654321', '12345', '54321'
+        ];
+        
+        if (sequenciasBloqueadas.includes(numeros)) {
+            return false;
+        }
+        
+        // Verificar padrões específicos como 99999-9999
+        if (telefone.includes('99999-9999') || telefone.includes('11111-1111') || 
+            telefone.includes('22222-2222') || telefone.includes('33333-3333')) {
             return false;
         }
         

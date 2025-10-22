@@ -61,6 +61,9 @@ RETURNS BOOLEAN AS $$
 DECLARE
     domain TEXT;
     disposable_domains TEXT[] := ARRAY[
+        -- Domínios de teste e temporários
+        'teste.com', 'test.com', 'example.com', 'example.org', 
+        'example.net', 'test.org', 'demo.com', 'sample.com',
         -- Domínios descartáveis mais comuns
         '10minutemail.com', 'tempmail.org', 'guerrillamail.com',
         'mailinator.com', 'throwaway.email', 'temp-mail.org',
@@ -117,6 +120,76 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- =====================================================
+-- 3.1. FUNÇÃO DE VALIDAÇÃO DE DADOS DE TESTE
+-- =====================================================
+
+-- Função para validar se os dados não são de teste
+CREATE OR REPLACE FUNCTION validate_test_data(
+    nome TEXT,
+    email TEXT,
+    telefone TEXT
+)
+RETURNS BOOLEAN AS $$
+DECLARE
+    nome_lower TEXT;
+    email_lower TEXT;
+    telefone_numeros TEXT;
+    test_patterns TEXT[] := ARRAY[
+        'teste', 'test', 'demo', 'exemplo', 'example', 'fulano', 
+        'beltrano', 'ciclano', 'joão', 'maria', 'josé', 'ana',
+        'abc', 'xyz', '123', 'sample', 'amostra', 'fake', 'falso',
+        'noreply', 'no-reply'
+    ];
+    blocked_sequences TEXT[] := ARRAY[
+        '1234567890', '0987654321', '123456789', '987654321',
+        '12345678', '87654321', '1234567', '7654321',
+        '123456', '654321', '12345', '54321'
+    ];
+BEGIN
+    -- Converter para minúsculas para comparação
+    nome_lower := LOWER(TRIM(nome));
+    email_lower := LOWER(email);
+    
+    -- Extrair apenas números do telefone
+    telefone_numeros := REGEXP_REPLACE(telefone, '[^0-9]', '', 'g');
+    
+    -- Validar nome - não pode conter padrões de teste
+    IF EXISTS (
+        SELECT 1 FROM unnest(test_patterns) AS pattern 
+        WHERE nome_lower LIKE '%' || pattern || '%'
+    ) THEN
+        RETURN FALSE;
+    END IF;
+    
+    -- Validar email - não pode conter padrões de teste
+    IF EXISTS (
+        SELECT 1 FROM unnest(test_patterns) AS pattern 
+        WHERE email_lower LIKE '%' || pattern || '%'
+    ) THEN
+        RETURN FALSE;
+    END IF;
+    
+    -- Validar telefone - não pode ter todos os dígitos iguais
+    IF telefone_numeros ~ '^(\d)\1+$' THEN
+        RETURN FALSE;
+    END IF;
+    
+    -- Validar telefone - não pode ser sequência óbvia
+    IF telefone_numeros = ANY(blocked_sequences) THEN
+        RETURN FALSE;
+    END IF;
+    
+    -- Validar padrões específicos de telefone
+    IF telefone LIKE '%99999-9999%' OR telefone LIKE '%11111-1111%' OR 
+       telefone LIKE '%22222-2222%' OR telefone LIKE '%33333-3333%' THEN
+        RETURN FALSE;
+    END IF;
+    
+    RETURN TRUE;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- =====================================================
 -- 4. POLÍTICAS RLS
 -- =====================================================
 
@@ -129,6 +202,8 @@ CREATE POLICY "Permitir INSERT público para captura de leads" ON leads
         check_rate_limit(ip_address, 3, '1 hour') AND
         -- Verificar domínio de email
         validate_email_domain(email) AND
+        -- Validar dados de teste
+        validate_test_data(nome, email, telefone) AND
         -- Validar dados obrigatórios
         nome IS NOT NULL AND 
         telefone IS NOT NULL AND 
@@ -177,6 +252,11 @@ BEGIN
     -- Validar nome (não pode conter apenas números)
     IF NEW.nome ~ '^[0-9\s]+$' THEN
         RAISE EXCEPTION 'Nome deve conter pelo menos algumas letras';
+    END IF;
+    
+    -- Validar dados de teste
+    IF NOT validate_test_data(NEW.nome, NEW.email, NEW.telefone) THEN
+        RAISE EXCEPTION 'Por favor, use dados reais';
     END IF;
     
     -- Definir timestamps se não fornecidos
