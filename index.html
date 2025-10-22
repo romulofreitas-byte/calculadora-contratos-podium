@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Contratos Pódium</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏁 Calculadora de Contratos Pódium</h1>
+            <p>Ferramenta de Previsibilidade Comercial - Método Pódium</p>
+        </div>
+        
+        <div class="section">
+            <div class="instructions">
+                <p><strong>📋 INSTRUÇÕES DE USO:</strong> Preencha os campos em AMARELO com suas informações reais. A calculadora determinará automaticamente quantas ligações você precisa fazer para atingir sua meta de faturamento até dezembro.</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">📊 DADOS DE ENTRADA DO PILOTO</div>
+            
+            <div class="input-group">
+                <div class="input-item">
+                    <label for="meta">Meta de Faturamento (R$)</label>
+                    <input type="number" id="meta" value="20000" step="1000">
+                    <div class="input-description">Quanto você quer faturar até dezembro?</div>
+                </div>
+                
+                <div class="input-item">
+                    <label for="ticket">Ticket Médio do Projeto (R$)</label>
+                    <input type="number" id="ticket" value="5000" step="500">
+                    <div class="input-description">Qual é o valor médio de um projeto que você fecha?</div>
+                </div>
+            </div>
+            
+            <table>
+                <tr>
+                    <th>Informação</th>
+                    <th>Valor</th>
+                    <th>Descrição</th>
+                </tr>
+                <tr>
+                    <td><strong>Quantidade de Projetos a Fechar</strong></td>
+                    <td style="background-color: #fffef0; font-weight: bold; color: #F2b705;"><span id="projetos">4</span> projetos</td>
+                    <td>Calculado automaticamente (Meta ÷ Ticket Médio)</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">🎯 TAXAS DE CONVERSÃO DO PROCESSO COMERCIAL</div>
+            
+            <div class="input-group">
+                <div class="input-item">
+                    <label for="taxa1">Ligações → R1 Agendada (%)</label>
+                    <input type="number" id="taxa1" value="30" min="1" max="100" step="5">
+                    <div class="input-description">De cada 10 ligações efetivadas, quantas viram reuniões R1?</div>
+                </div>
+                
+                <div class="input-item">
+                    <label for="taxa2">R1 → R2 Agendada (%)</label>
+                    <input type="number" id="taxa2" value="70" min="1" max="100" step="5">
+                    <div class="input-description">De cada 10 R1s realizadas, quantas viram R2?</div>
+                </div>
+                
+                <div class="input-item">
+                    <label for="taxa3">R2 → Negociação (%)</label>
+                    <input type="number" id="taxa3" value="80" min="1" max="100" step="5">
+                    <div class="input-description">De cada 10 R2s realizadas, quantas entram em negociação?</div>
+                </div>
+                
+                <div class="input-item">
+                    <label for="taxa4">Negociação → Contrato Fechado (%)</label>
+                    <input type="number" id="taxa4" value="75" min="1" max="100" step="5">
+                    <div class="input-description">De cada 10 negociações, quantas viram contratos?</div>
+                </div>
+            </div>
+            
+            <table class="conversion-table">
+                <tr>
+                    <th>Etapa do Processo</th>
+                    <th>Taxa de Conversão</th>
+                    <th>Descrição</th>
+                </tr>
+                <tr>
+                    <td>Ligações Efetivadas → R1 Agendada</td>
+                    <td><span id="taxa1-display">30</span>%</td>
+                    <td>Ligações que viram reuniões de levantamento de necessidades</td>
+                </tr>
+                <tr>
+                    <td>R1 Realizada → R2 Agendada</td>
+                    <td><span id="taxa2-display">70</span>%</td>
+                    <td>R1s que avançaram para reunião de apresentação de proposta</td>
+                </tr>
+                <tr>
+                    <td>R2 Realizada → Negociação</td>
+                    <td><span id="taxa3-display">80</span>%</td>
+                    <td>R2s que entraram em fase de negociação</td>
+                </tr>
+                <tr>
+                    <td>Negociação → Contrato Fechado</td>
+                    <td><span id="taxa4-display">75</span>%</td>
+                    <td>Negociações que resultaram em contratos assinados</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">🔄 CÁLCULO REGRESSIVO - QUANTAS LIGAÇÕES PRECISO FAZER?</div>
+            
+            <div class="step-breakdown">
+                <div class="step-item">
+                    <div class="step-label">1️⃣ Contratos a Fechar</div>
+                    <div class="step-value"><span id="passo1">4</span> contratos</div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-label">2️⃣ Negociações Necessárias</div>
+                    <div class="step-value"><span id="passo2">5</span> negociações</div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-label">3️⃣ R2s Necessárias</div>
+                    <div class="step-value"><span id="passo3">7</span> reuniões R2</div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-label">4️⃣ R1s Necessárias</div>
+                    <div class="step-value"><span id="passo4">10</span> reuniões R1</div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-label">5️⃣ Ligações Efetivadas Necessárias</div>
+                    <div class="step-value"><span id="passo5">33</span> ligações</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="result-box">
+            <h2>🎯 RESULTADO FINAL</h2>
+            <p>Você precisa fazer</p>
+            <div class="result-number"><span id="resultado">33</span></div>
+            <p>ligações efetivadas para fechar sua meta de faturamento</p>
+            <div class="result-description">
+                <p><strong>Meta:</strong> R$ <span id="meta-display">20.000</span></p>
+                <p><strong>Ticket Médio:</strong> R$ <span id="ticket-display">5.000</span></p>
+                <p><strong>Contratos:</strong> <span id="contratos-display">4</span></p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">💡 DICAS IMPORTANTES</div>
+            
+            <div class="tips">
+                <h3>Maximize sua previsibilidade comercial:</h3>
+                <ol>
+                    <li><strong>Ligações Efetivadas:</strong> São aquelas em que você consegue falar com a pessoa. Não contam chamadas perdidas, atendedores, secretárias ou voicemails.</li>
+                    
+                    <li><strong>Ajuste as Taxas:</strong> As taxas de conversão podem variar conforme seu nicho, posicionamento e experiência. Comece com os valores sugeridos e ajuste conforme sua realidade.</li>
+                    
+                    <li><strong>Quanto Maior a Taxa, Menos Ligações:</strong> Investir em melhorar sua abordagem de vendas reduz significativamente o número de ligações necessárias.</li>
+                    
+                    <li><strong>Registre Suas Conversões Reais:</strong> Mantenha um registro detalhado de suas conversões em cada etapa para melhorar a previsibilidade mês a mês.</li>
+                    
+                    <li><strong>Consistência é a Chave:</strong> Lembre-se: "Mais pessoas desistem do que fracassam." A consistência nas ligações é o que separa os pilotos de sucesso dos que ficam no pit stop.</li>
+                    
+                    <li><strong>Qualidade vs. Quantidade:</strong> Não é apenas sobre fazer ligações, é sobre fazer ligações QUALIFICADAS para leads que realmente se encaixam no seu ICP.</li>
+                    
+                    <li><strong>Acompanhe Seu Pipeline:</strong> Sempre saiba quantas pessoas estão em cada etapa do seu funil comercial para manter a previsibilidade.</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>🏁 Calculadora de Contratos Pódium | Método Pódium | Desenvolvido para os Pilotos da Comunidade</p>
+            <p>Lembre-se: "Do zero ao contrato fechado, juntos no pódium"</p>
+        </div>
+    </div>
+    
+    <!-- Modal de Captura de Leads -->
+    <div id="leadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🏁 Acesse a Calculadora Pódium</h2>
+                <p>Desbloqueie a ferramenta preenchendo seus dados</p>
+            </div>
+            
+            <form id="leadForm" class="lead-form">
+                <div class="form-group">
+                    <label for="leadNome">Nome Completo *</label>
+                    <input type="text" id="leadNome" name="nome" placeholder="Seu nome completo" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="leadTelefone">Telefone com DDD *</label>
+                    <input type="tel" id="leadTelefone" name="telefone" placeholder="(XX) 99999-9999" pattern="\(\d{2}\) \d{5}-\d{4}" required>
+                    <small>Formato: (XX) 99999-9999</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="leadEmail">E-mail *</label>
+                    <input type="email" id="leadEmail" name="email" placeholder="seu@email.com" required>
+                </div>
+                
+                <button type="submit" class="btn-unlock">🔓 Desbloquear Calculadora</button>
+            </form>
+            
+            <div class="modal-footer">
+                <p>Seus dados serão usados apenas para enviar atualizações sobre o Método Pódium</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
