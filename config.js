@@ -19,24 +19,14 @@ function getEnvVar(name, defaultValue = null) {
 
 const SUPABASE_CONFIG = {
     // URL do seu projeto Supabase
-    URL: getEnvVar('VITE_SUPABASE_URL', "https://seu-projeto.supabase.co"),
+    URL: getEnvVar('VITE_SUPABASE_URL', "https://zqscitdvsqfkhzddzaeh.supabase.co"),
     
     // Chave pública do Supabase (ANON KEY)
-    ANON_KEY: getEnvVar('VITE_SUPABASE_ANON_KEY', "sua-chave-publica-aqui"),
+    ANON_KEY: getEnvVar('VITE_SUPABASE_ANON_KEY', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpxc2NpdGR2c3Fma2h6ZGR6YWVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNzA0MzAsImV4cCI6MjA3NjY0NjQzMH0.JZmkmdxJTTf42UYY3M4ruunnS5HupXHiTMwK_YDJmAY"),
     
     // Nome da tabela
     TABLE_NAME: 'leads'
 };
-
-// Debug: Log das variáveis de ambiente
-console.log('🔍 Debug - Variáveis de ambiente:');
-console.log('VITE_SUPABASE_URL:', getEnvVar('VITE_SUPABASE_URL', 'NÃO ENCONTRADA'));
-console.log('VITE_SUPABASE_ANON_KEY:', getEnvVar('VITE_SUPABASE_ANON_KEY', 'NÃO ENCONTRADA'));
-console.log('SUPABASE_CONFIG:', SUPABASE_CONFIG);
-
-// Debug: Verificar se as variáveis estão no window object
-console.log('🔍 Debug - Window object keys:', Object.keys(window).filter(key => key.includes('VITE')));
-console.log('🔍 Debug - Window object:', window);
 
 // Expor configuração para o window object (necessário para script.js)
 window.SUPABASE_CONFIG = SUPABASE_CONFIG;
