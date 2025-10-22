@@ -9,11 +9,10 @@
 
 // Função para obter variáveis de ambiente (compatível com Vercel)
 function getEnvVar(name, defaultValue = null) {
-    // No Vercel, as variáveis são injetadas automaticamente
+    // No Vercel, as variáveis são injetadas automaticamente no window object
     // Para desenvolvimento local, você pode usar um arquivo .env
-    // Tentar diferentes formas de acessar as variáveis
-    return process?.env?.[name] || 
-           window?.[`__ENV_${name}`] || 
+    // Tentar diferentes formas de acessar as variáveis no navegador
+    return window?.[`__ENV_${name}`] || 
            window?.[name] || 
            defaultValue;
 }
@@ -34,6 +33,10 @@ console.log('🔍 Debug - Variáveis de ambiente:');
 console.log('VITE_SUPABASE_URL:', getEnvVar('VITE_SUPABASE_URL', 'NÃO ENCONTRADA'));
 console.log('VITE_SUPABASE_ANON_KEY:', getEnvVar('VITE_SUPABASE_ANON_KEY', 'NÃO ENCONTRADA'));
 console.log('SUPABASE_CONFIG:', SUPABASE_CONFIG);
+
+// Debug: Verificar se as variáveis estão no window object
+console.log('🔍 Debug - Window object keys:', Object.keys(window).filter(key => key.includes('VITE')));
+console.log('🔍 Debug - Window object:', window);
 
 // Expor configuração para o window object (necessário para script.js)
 window.SUPABASE_CONFIG = SUPABASE_CONFIG;
