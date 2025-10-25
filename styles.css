@@ -844,17 +844,18 @@ table tr:hover td {
 }
 
 .modal-content {
-    background: var(--podium-dark-tertiary);
-    border: 1px solid var(--podium-gray-700);
-    padding: 2.5rem;
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    max-width: 450px;
+    background: rgba(31, 41, 55, 0.25);
+    border: 1px solid rgba(242, 183, 5, 0.2);
+    padding: 2rem;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    max-width: 420px;
     max-height: 90vh;
     width: 90%;
     margin: 2rem;
     animation: slideIn 0.4s ease-out;
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
 }
 
 @keyframes slideIn {
@@ -870,35 +871,35 @@ table tr:hover td {
 
 .modal-header {
     text-align: center;
-    margin-bottom: 2rem;
-    border-bottom: 2px solid var(--podium-yellow);
-    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(242, 183, 5, 0.3);
+    padding-bottom: 1rem;
 }
 
 .modal-logo {
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .logo-podium-modal {
-    height: 50px;
+    height: 40px;
     width: auto;
-    filter: drop-shadow(0 3px 6px rgba(242, 183, 5, 0.3));
+    filter: drop-shadow(0 2px 4px rgba(242, 183, 5, 0.3));
     transition: var(--transition-normal);
 }
 
 .logo-podium-modal:hover {
     transform: scale(1.05);
-    filter: drop-shadow(0 4px 8px rgba(242, 183, 5, 0.4));
+    filter: drop-shadow(0 3px 6px rgba(242, 183, 5, 0.4));
 }
 
 .modal-header h2 {
     color: var(--podium-text-primary);
     font-family: var(--font-ubuntu);
-    font-size: 1.5rem;
-    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
     font-weight: 700;
 }
 
@@ -909,11 +910,11 @@ table tr:hover td {
 }
 
 .lead-form {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 
 .form-group {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
     display: flex;
     flex-direction: column;
 }
@@ -922,29 +923,30 @@ table tr:hover td {
     font-family: var(--font-ubuntu);
     font-weight: 600;
     color: var(--podium-text-primary);
-    margin-bottom: 0.75rem;
-    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
 .form-group input {
-    padding: 1rem 1.25rem;
-    border: 2px solid rgba(242, 183, 5, 0.3);
-    border-radius: 12px;
+    padding: 0.875rem 1rem;
+    border: 1px solid rgba(242, 183, 5, 0.3);
+    border-radius: 10px;
     font-size: 0.875rem;
-    background: var(--podium-dark-primary);
+    background: rgba(17, 24, 39, 0.4);
     color: var(--podium-text-primary);
     font-family: var(--font-montserrat);
     font-weight: 500;
     transition: var(--transition-normal);
+    backdrop-filter: blur(8px);
 }
 
 .form-group input:focus {
     outline: none;
     border-color: var(--podium-yellow);
-    box-shadow: 0 0 0 3px rgba(242, 183, 5, 0.2);
-    background: rgba(17, 24, 39, 0.8);
+    box-shadow: 0 0 0 2px rgba(242, 183, 5, 0.2);
+    background: rgba(17, 24, 39, 0.6);
 }
 
 .form-group input::placeholder {
@@ -954,24 +956,25 @@ table tr:hover td {
 .form-group small {
     color: var(--podium-text-muted);
     font-size: 0.75rem;
-    margin-top: 0.5rem;
+    margin-top: 0.375rem;
     font-style: italic;
 }
 
 .btn-unlock {
     width: 100%;
-    padding: 1rem;
+    padding: 0.875rem 1.5rem;
     background: linear-gradient(135deg, var(--podium-yellow), var(--podium-yellow-hover));
     color: var(--podium-black);
     border: none;
     border-radius: 12px;
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-weight: 700;
     font-family: var(--font-montserrat);
     cursor: pointer;
     transition: var(--transition-normal);
     position: relative;
     overflow: hidden;
+    box-shadow: 0 4px 15px rgba(242, 183, 5, 0.3);
 }
 
 .btn-unlock::before {
@@ -1007,8 +1010,8 @@ table tr:hover td {
 
 .modal-footer {
     text-align: center;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--podium-gray-700);
+    padding-top: 1rem;
+    border-top: 1px solid rgba(242, 183, 5, 0.2);
 }
 
 .modal-footer p {
@@ -1208,12 +1211,26 @@ table tr:hover td {
     
     .modal-content {
         padding: 1.25rem;
-        margin: 1rem;
+        margin: 0.75rem;
         max-height: 85vh;
+        max-width: 350px;
     }
     
     .modal-header h2 {
-        font-size: 1.125rem;
+        font-size: 1rem;
+    }
+    
+    .modal-header p {
+        font-size: 0.8125rem;
+    }
+    
+    .form-group {
+        margin-bottom: 0.875rem;
+    }
+    
+    .btn-unlock {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.8125rem;
     }
     
     .form-group {
