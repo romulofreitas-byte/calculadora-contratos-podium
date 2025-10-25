@@ -831,7 +831,10 @@ table tr:hover td {
     border-radius: 20px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     max-width: 450px;
+    max-height: 90vh;
     width: 90%;
+    margin: 2rem;
+    overflow-y: auto;
     animation: slideIn 0.4s ease-out;
     backdrop-filter: blur(12px);
 }
@@ -1157,6 +1160,7 @@ table tr:hover td {
     .modal-content {
         padding: 1.5rem;
         margin: 1rem;
+        max-height: 85vh;
     }
     
     .modal-header h2 {
