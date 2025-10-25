@@ -75,6 +75,25 @@ body {
     position: relative;
 }
 
+.header-logo {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-podium {
+    height: 60px;
+    width: auto;
+    filter: drop-shadow(0 4px 8px rgba(242, 183, 5, 0.3));
+    transition: var(--transition-normal);
+}
+
+.logo-podium:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 6px 12px rgba(242, 183, 5, 0.4));
+}
+
 .header::after {
     content: '';
     position: absolute;
@@ -856,6 +875,25 @@ table tr:hover td {
     padding-bottom: 1.5rem;
 }
 
+.modal-logo {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-podium-modal {
+    height: 50px;
+    width: auto;
+    filter: drop-shadow(0 3px 6px rgba(242, 183, 5, 0.3));
+    transition: var(--transition-normal);
+}
+
+.logo-podium-modal:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 4px 8px rgba(242, 183, 5, 0.4));
+}
+
 .modal-header h2 {
     color: var(--podium-text-primary);
     font-family: var(--font-ubuntu);
@@ -990,6 +1028,10 @@ table tr:hover td {
         padding: 1.5rem 1rem;
     }
     
+    .logo-podium {
+        height: 50px;
+    }
+    
     .header h1 {
         font-size: 1.75rem;
     }
@@ -1083,6 +1125,14 @@ table tr:hover td {
 @media (max-width: 480px) {
     .container {
         padding: 1rem 0.75rem;
+    }
+    
+    .logo-podium {
+        height: 40px;
+    }
+    
+    .logo-podium-modal {
+        height: 40px;
     }
     
     .header h1 {
