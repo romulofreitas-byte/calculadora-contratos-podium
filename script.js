@@ -632,9 +632,104 @@ class CalculadoraPodium {
 }
 
 /**
+ * Proteção contra Cópias
+ * Implementa medidas básicas para dificultar cópias não autorizadas
+ */
+function inicializarProtecaoContraCopias() {
+    // Desabilitar clique direito
+    document.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        console.warn('⚠️ Clique direito desabilitado - Propriedade Intelectual Protegida');
+        return false;
+    });
+    
+    // Desabilitar atalhos de teclado para cópia, inspeção, etc.
+    document.addEventListener('keydown', (e) => {
+        // Ctrl+C, Ctrl+V, Ctrl+A, Ctrl+X
+        if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'a' || e.key === 'x')) {
+            e.preventDefault();
+            console.warn('⚠️ Atalho de teclado bloqueado - Propriedade Intelectual Protegida');
+            return false;
+        }
+        
+        // Ctrl+U (visualizar código fonte)
+        if (e.ctrlKey && e.key === 'u') {
+            e.preventDefault();
+            console.warn('⚠️ Visualização de código fonte bloqueada - Propriedade Intelectual Protegida');
+            return false;
+        }
+        
+        // Ctrl+S (salvar página)
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault();
+            console.warn('⚠️ Salvamento bloqueado - Propriedade Intelectual Protegida');
+            return false;
+        }
+        
+        // F12 (DevTools)
+        if (e.key === 'F12') {
+            e.preventDefault();
+            console.warn('⚠️ DevTools bloqueado - Propriedade Intelectual Protegida');
+            return false;
+        }
+        
+        // Ctrl+Shift+I (DevTools)
+        if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+            e.preventDefault();
+            console.warn('⚠️ DevTools bloqueado - Propriedade Intelectual Protegida');
+            return false;
+        }
+        
+        // Ctrl+Shift+C (DevTools Inspector)
+        if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+            e.preventDefault();
+            console.warn('⚠️ Inspector bloqueado - Propriedade Intelectual Protegida');
+            return false;
+        }
+    });
+    
+    // Desabilitar seleção de texto (mas permitir em inputs)
+    document.addEventListener('selectstart', (e) => {
+        // Permitir seleção apenas em inputs, textareas e elementos editáveis
+        if (e.target.tagName === 'INPUT' || 
+            e.target.tagName === 'TEXTAREA' || 
+            e.target.isContentEditable) {
+            return true;
+        }
+        e.preventDefault();
+        return false;
+    });
+    
+    // Watermark no console
+    console.log('%c⚠️ PROPRIEDADE INTELECTUAL PROTEGIDA ⚠️', 'color: #f2b705; font-size: 16px; font-weight: bold;');
+    console.log('%cEste código é propriedade do Mundo Pódium®', 'color: #f2b705; font-size: 12px;');
+    console.log('%cCópias não autorizadas são ilegais.', 'color: #ff0000; font-size: 12px; font-weight: bold;');
+    console.log('%c© 2025 Mundo Pódium - Todos os direitos reservados', 'color: #999; font-size: 10px;');
+    
+    // Tentar detectar DevTools
+    let devtools = {open: false};
+    const element = new Image();
+    Object.defineProperty(element, 'id', {
+        get: function() {
+            devtools.open = true;
+            console.warn('⚠️ DevTools detectado - Propriedade Intelectual Protegida');
+        }
+    });
+    
+    setInterval(() => {
+        devtools.open = false;
+        console.log(element);
+        console.clear();
+    }, 1000);
+}
+
+/**
  * Inicializar a calculadora quando o DOM estiver pronto
  */
 document.addEventListener('DOMContentLoaded', () => {
+    // Inicializar proteção contra cópias
+    inicializarProtecaoContraCopias();
+    
     // Inicializar captura de leads
     const capturaLeads = new CapturadeLeads();
     
@@ -655,6 +750,19 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Inicializar Vercel Analytics
     inicializarVercelAnalytics();
+    
+    // Adicionar tracking ao botão WhatsApp flutuante
+    const whatsappFloat = document.querySelector('.whatsapp-float');
+    if (whatsappFloat) {
+        whatsappFloat.addEventListener('click', () => {
+            if (typeof window.va === 'function') {
+                window.va('track', 'WhatsApp Float Button Click', {
+                    source: 'floating-button',
+                    position: 'bottom-right'
+                });
+            }
+        });
+    }
 });
 
 /**
