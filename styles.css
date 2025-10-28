@@ -1423,13 +1423,15 @@ table tr:hover td {
     right: 24px;
     background: linear-gradient(135deg, #25D366, #20B358);
     color: white;
-    width: 72px;
-    height: 72px;
+    min-width: 180px;
+    height: 64px;
     border-radius: 20px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 0 18px;
     box-shadow: 
         0 4px 20px rgba(37, 211, 102, 0.4),
         0 8px 32px rgba(37, 211, 102, 0.3),
@@ -1439,12 +1441,9 @@ table tr:hover td {
     font-family: var(--font-montserrat);
     z-index: 999;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    text-align: center;
-    line-height: 1.2;
     animation: float-badge 3s ease-in-out infinite;
     border: 2px solid rgba(255, 255, 255, 0.2);
-    overflow: visible;
-    padding: 10px;
+    overflow: hidden;
 }
 
 .whatsapp-float::before {
@@ -1474,12 +1473,12 @@ table tr:hover td {
 }
 
 .whatsapp-icon {
-    font-size: 2.25rem;
+    font-size: 2rem;
     display: block;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
     animation: icon-float 2.5s ease-in-out infinite;
     line-height: 1;
-    margin-bottom: 2px;
+    flex-shrink: 0;
 }
 
 @keyframes icon-float {
@@ -1491,45 +1490,26 @@ table tr:hover td {
     }
 }
 
-.whatsapp-badge {
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    background: linear-gradient(135deg, #ffd700, #ffed4e);
-    color: #000;
-    font-size: 0.625rem;
-    font-weight: 900;
-    padding: 3px 8px;
-    border-radius: 10px;
-    border: 2px solid rgba(255, 255, 255, 0.6);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-    text-transform: uppercase;
-    letter-spacing: 0.75px;
-    animation: badge-pulse 2s ease-in-out infinite;
-    font-family: var(--font-ubuntu);
-}
-
-@keyframes badge-pulse {
-    0%, 100% {
-        transform: scale(1);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    }
-    50% {
-        transform: scale(1.1);
-        box-shadow: 0 3px 12px rgba(255, 215, 0, 0.5);
-    }
+.whatsapp-text {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+    line-height: 1.2;
+    letter-spacing: 0.2px;
 }
 
 @keyframes float-badge {
     0%, 100% {
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
         box-shadow: 
             0 4px 20px rgba(37, 211, 102, 0.4),
             0 8px 32px rgba(37, 211, 102, 0.3),
             inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
     50% {
-        transform: translateY(-6px);
+        transform: translateY(-6px) scale(1.02);
         box-shadow: 
             0 6px 25px rgba(37, 211, 102, 0.5),
             0 10px 40px rgba(37, 211, 102, 0.4),
@@ -1734,23 +1714,21 @@ table tr:hover td {
     }
     
     .whatsapp-float {
-        width: 64px;
-        height: 64px;
+        min-width: 160px;
+        height: 56px;
         bottom: 16px;
         right: 16px;
         border-radius: 16px;
-        padding: 8px;
+        padding: 0 14px;
+        gap: 10px;
     }
     
     .whatsapp-icon {
-        font-size: 2rem;
+        font-size: 1.75rem;
     }
     
-    .whatsapp-badge {
-        font-size: 0.55rem;
-        padding: 2px 6px;
-        top: -4px;
-        right: -4px;
+    .whatsapp-text {
+        font-size: 0.75rem;
     }
     
     .modal-header h2 {
