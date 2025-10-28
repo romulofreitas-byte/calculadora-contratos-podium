@@ -168,10 +168,22 @@
         </div>
         
         <div class="result-box">
-            <h2>🎯 RESULTADO FINAL</h2>
-            <p class="result-subtitle">Você precisa fazer</p>
-            <div class="result-number"><span id="resultado">50</span></div>
-            <p class="result-main-text"><strong>ligações efetivadas com o decisor</strong> para fechar sua meta de faturamento no período escolhido</p>
+            <div class="result-header">
+                <div class="result-icon">📞</div>
+                <h2>🎯 RESULTADO FINAL</h2>
+            </div>
+            
+            <div class="result-main">
+                <div class="result-number-wrapper">
+                    <div class="result-number"><span id="resultado">50</span></div>
+                    <div class="result-label">ligações efetivadas</div>
+                    <div class="result-badge">com o decisor</div>
+                </div>
+                
+                <div class="result-subtitle">
+                    <p>Para fechar sua meta de faturamento no período escolhido</p>
+                </div>
+            </div>
             
             <div class="result-warning">
                 <div class="warning-icon">⚠️</div>
@@ -181,9 +193,18 @@
             </div>
             
             <div class="result-description">
-                <p><strong>Meta do Período:</strong> R$ <span id="meta-display">20.000</span></p>
-                <p><strong>Ticket Médio:</strong> R$ <span id="ticket-display">5.000</span></p>
-                <p><strong>Contratos:</strong> <span id="contratos-display">4</span></p>
+                <div class="desc-item">
+                    <span class="desc-label">Meta do Período</span>
+                    <span class="desc-value">R$ <span id="meta-display">20.000</span></span>
+                </div>
+                <div class="desc-item">
+                    <span class="desc-label">Ticket Médio</span>
+                    <span class="desc-value">R$ <span id="ticket-display">5.000</span></span>
+                </div>
+                <div class="desc-item">
+                    <span class="desc-label">Contratos</span>
+                    <span class="desc-value"><span id="contratos-display">4</span> contratos</span>
+                </div>
             </div>
         </div>
         
