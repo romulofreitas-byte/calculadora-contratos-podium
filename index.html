@@ -69,7 +69,7 @@
             
             <div class="input-group">
                 <div class="input-item">
-                    <label for="taxa1">Ligações → R1 Realizada (%)</label>
+                    <label for="taxa1">Ligações Efetivadas com Decisor → R1 Realizada (%)</label>
                     <input type="number" id="taxa1" value="20" min="1" max="100" step="5">
                     <div class="input-description">De cada 10 ligações efetivadas (falando com decisor), quantas viram reuniões R1 realizadas?</div>
                 </div>
@@ -101,22 +101,22 @@
                 </tr>
                 <tr>
                     <td>Ligações Efetivadas → R1 Realizada</td>
-                    <td><span id="taxa1-display">20</span>%</td>
+                    <td><span id="taxa1-display">20</span><span class="percent-sign">%</span></td>
                     <td>Ligações com decisor que viram reuniões de levantamento de necessidades</td>
                 </tr>
                 <tr>
                     <td>R1 Realizada → R2 Realizada</td>
-                    <td><span id="taxa2-display">70</span>%</td>
+                    <td><span id="taxa2-display">70</span><span class="percent-sign">%</span></td>
                     <td>R1s que avançaram para reunião de apresentação de proposta</td>
                 </tr>
                 <tr>
                     <td>R2 Realizada → Negociação</td>
-                    <td><span id="taxa3-display">80</span>%</td>
+                    <td><span id="taxa3-display">80</span><span class="percent-sign">%</span></td>
                     <td>R2s que entraram em fase de negociação</td>
                 </tr>
                 <tr>
                     <td>Negociação → Contrato Fechado</td>
-                    <td><span id="taxa4-display">50</span>%</td>
+                    <td><span id="taxa4-display">50</span><span class="percent-sign">%</span></td>
                     <td>Negociações que resultaram em contratos assinados</td>
                 </tr>
             </table>
@@ -146,18 +146,40 @@
                     <div class="step-value"><span id="passo4">14</span> reuniões R1</div>
                 </div>
                 
-                <div class="step-item">
-                    <div class="step-label">5️⃣ Ligações Efetivadas Necessárias</div>
-                    <div class="step-value"><span id="passo5">50</span> ligações</div>
+                <div class="step-item featured-step">
+                    <div class="step-label">5️⃣ Ligações Efetivadas com Decisor Necessárias</div>
+                    <div class="step-value"><span id="passo5">50</span> ligações efetivadas</div>
+                </div>
+            </div>
+            
+            <div class="info-box-premium">
+                <div class="info-box-icon">💡</div>
+                <div class="info-box-content">
+                    <h4>Importante sobre Ligação Efetivada</h4>
+                    <p>Este número representa <strong>ligações efetivadas com o decisor</strong> (falando diretamente com quem decide). Na prática, você precisará fazer mais ligações para atingir este número, considerando:</p>
+                    <ul>
+                        <li>Ligações não atendidas ou caíram na caixa postal</li>
+                        <li>Ligações atendidas por secretárias ou outras pessoas</li>
+                        <li>Ligações onde a pessoa certa não estava disponível</li>
+                    </ul>
+                    <p class="info-box-highlight">Considerando uma taxa típica de 30-40% de conversão de "ligações totais" para "ligações efetivadas", você precisará fazer aproximadamente <strong>2 a 3 vezes mais ligações totais</strong>.</p>
                 </div>
             </div>
         </div>
         
         <div class="result-box">
             <h2>🎯 RESULTADO FINAL</h2>
-            <p>Você precisa fazer</p>
+            <p class="result-subtitle">Você precisa fazer</p>
             <div class="result-number"><span id="resultado">50</span></div>
-            <p>ligações efetivadas para fechar sua meta de faturamento no período escolhido</p>
+            <p class="result-main-text"><strong>ligações efetivadas com o decisor</strong> para fechar sua meta de faturamento no período escolhido</p>
+            
+            <div class="result-warning">
+                <div class="warning-icon">⚠️</div>
+                <div class="warning-content">
+                    <strong>Importante:</strong> Este número representa ligações efetivadas (falando com o decisor). Na prática, você precisará fazer <strong>mais ligações</strong> considerando as que não são atendidas ou atendidas por outras pessoas (secretárias, assistentes, etc.). Considere fazer aproximadamente <strong>2 a 3 vezes mais ligações totais</strong> para atingir este número de ligações efetivadas.
+                </div>
+            </div>
+            
             <div class="result-description">
                 <p><strong>Meta do Período:</strong> R$ <span id="meta-display">20.000</span></p>
                 <p><strong>Ticket Médio:</strong> R$ <span id="ticket-display">5.000</span></p>
@@ -221,6 +243,7 @@
                 <div class="glossary-item">
                     <h4>📞 Ligações Efetivadas</h4>
                     <p><strong>Ligações que Resultaram em Conversa com o Decisor</strong> - São aquelas ligações onde você conseguiu falar diretamente com a pessoa certa (o decisor). NÃO contam: chamadas perdidas, atendimentos por secretárias, voicemails ou mensagens deixadas. É fundamental falar com quem tem poder de decisão.</p>
+                    <p><strong>⚠️ Importante:</strong> Na prática, você precisará fazer significativamente mais ligações totais para conseguir este número de ligações efetivadas. Apenas cerca de 30-40% das ligações totais resultam em conversas efetivadas com o decisor.</p>
                 </div>
                 
                 <div class="glossary-item">
@@ -256,7 +279,7 @@
             <div class="tips">
                 <h3>Maximize sua previsibilidade comercial:</h3>
                 <ol>
-                    <li><strong>Ligações Efetivadas:</strong> São aquelas em que você consegue falar com o decisor (pessoa com poder de decisão). Não contam chamadas perdidas, atendedores, secretárias ou voicemails.</li>
+                    <li><strong>Ligações Efetivadas:</strong> São aquelas em que você consegue falar com o decisor (pessoa com poder de decisão). Não contam chamadas perdidas, atendedores, secretárias ou voicemails. <strong>Importante:</strong> Para cada ligação efetivada, você precisará fazer aproximadamente 2-3 ligações totais, considerando as que não são atendidas ou atendidas por outras pessoas.</li>
                     
                     <li><strong>Ajuste as Taxas:</strong> As taxas de conversão podem variar conforme seu nicho, posicionamento e experiência. Comece com os valores sugeridos e ajuste conforme sua realidade.</li>
                     
