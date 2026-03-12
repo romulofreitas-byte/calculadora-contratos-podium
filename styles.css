@@ -222,6 +222,10 @@ body {
     flex-direction: column;
 }
 
+.input-with-suffix {
+    position: relative;
+}
+
 .input-item label {
     font-family: var(--font-ubuntu);
     font-weight: 600;
@@ -264,6 +268,27 @@ body {
 .input-item input:hover {
     border-color: rgba(242, 183, 5, 0.5);
     transform: translateY(-1px);
+}
+
+.input-with-suffix input {
+    width: 100%;
+    padding-right: 2.75rem;
+}
+
+.input-suffix {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--podium-yellow);
+    font-weight: 700;
+    font-family: var(--font-ubuntu);
+    pointer-events: none;
+    opacity: 0.9;
+}
+
+.input-with-suffix:focus-within .input-suffix {
+    opacity: 1;
 }
 
 .input-description {
@@ -1650,6 +1675,14 @@ table tr:hover td {
     .section-title {
         font-size: 1rem;
         padding: 0.875rem 1.25rem;
+    }
+
+    .input-with-suffix input {
+        padding-right: 2.5rem;
+    }
+
+    .input-suffix {
+        right: 0.875rem;
     }
     
     .result-number {
