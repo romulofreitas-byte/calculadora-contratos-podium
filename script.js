@@ -584,8 +584,8 @@ class CalculadoraPodium {
             const dados = localStorage.getItem('calculadora-podium-dados');
             if (dados) {
                 const parsed = JSON.parse(dados);
-                this.metaInput.value = this.formatarMoedaInputValue(parsed.meta || 20000);
-                this.ticketInput.value = this.formatarMoedaInputValue(parsed.ticket || 5000);
+                this.metaInput.value = this.formatarMoedaInputValue(parsed.meta || 80000);
+                this.ticketInput.value = this.formatarMoedaInputValue(parsed.ticket || 15000);
             }
         } catch (e) {
             console.warn('Não foi possível carregar os dados do localStorage:', e);
@@ -596,8 +596,8 @@ class CalculadoraPodium {
      * Reseta todos os valores para os padrões
      */
     resetar() {
-        this.metaInput.value = this.formatarMoedaInputValue(20000);
-        this.ticketInput.value = this.formatarMoedaInputValue(5000);
+        this.metaInput.value = this.formatarMoedaInputValue(80000);
+        this.ticketInput.value = this.formatarMoedaInputValue(15000);
         this.taxa1Input.value = '20%';
         this.taxa2Input.value = '70%';
         this.taxa3Input.value = '80%';
