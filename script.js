@@ -413,6 +413,10 @@ class CalculadoraPodium {
         this.taxa2Input.addEventListener('input', () => this.handleTaxaInput(this.taxa2Input));
         this.taxa3Input.addEventListener('input', () => this.handleTaxaInput(this.taxa3Input));
         this.taxa4Input.addEventListener('input', () => this.handleTaxaInput(this.taxa4Input));
+        this.taxa1Input.addEventListener('blur', () => this.handleTaxaBlur(this.taxa1Input));
+        this.taxa2Input.addEventListener('blur', () => this.handleTaxaBlur(this.taxa2Input));
+        this.taxa3Input.addEventListener('blur', () => this.handleTaxaBlur(this.taxa3Input));
+        this.taxa4Input.addEventListener('blur', () => this.handleTaxaBlur(this.taxa4Input));
         if (this.prazoMesesInput) {
             this.prazoMesesInput.addEventListener('input', () => this.handlePrazoMesesInput());
         }
@@ -428,9 +432,17 @@ class CalculadoraPodium {
     }
 
     /**
-     * Mantém o input de taxa no formato percentual (ex: 20%)
+     * Mantém o input de taxa editável durante digitação
      */
     handleTaxaInput(input) {
+        input.value = this.sanitizarPercentualInputValue(input.value);
+        this.calcular();
+    }
+
+    /**
+     * Aplica sufixo de percentual ao sair do campo
+     */
+    handleTaxaBlur(input) {
         input.value = this.formatarPercentualInputValue(input.value);
         this.calcular();
     }
@@ -449,10 +461,18 @@ class CalculadoraPodium {
      * Formata texto para padrão "N%"
      */
     formatarPercentualInputValue(valor) {
+        const numeros = this.sanitizarPercentualInputValue(valor);
+        if (!numeros) return '';
+        return `${numeros}%`;
+    }
+
+    /**
+     * Mantém apenas dígitos e limita percentual entre 1 e 100
+     */
+    sanitizarPercentualInputValue(valor) {
         const numeros = String(valor || '').replace(/\D/g, '');
         if (!numeros) return '';
-        const percentual = Math.min(100, Math.max(1, parseInt(numeros, 10)));
-        return `${percentual}%`;
+        return String(Math.min(100, Math.max(1, parseInt(numeros, 10))));
     }
 
     /**
@@ -793,6 +813,14 @@ class CalculadoraPodium {
  * Implementa medidas básicas para dificultar cópias não autorizadas
  */
 function inicializarProtecaoContraCopias() {
+    const isEditableTarget = (target) => {
+        if (!target || !target.tagName) return false;
+        return target.tagName === 'INPUT' ||
+            target.tagName === 'TEXTAREA' ||
+            target.tagName === 'SELECT' ||
+            target.isContentEditable;
+    };
+
     // Desabilitar clique direito
     document.addEventListener('contextmenu', (e) => {
         e.preventDefault();
@@ -802,22 +830,30 @@ function inicializarProtecaoContraCopias() {
     
     // Desabilitar atalhos de teclado para cópia, inspeção, etc.
     document.addEventListener('keydown', (e) => {
+        const targetEditavel = isEditableTarget(e.target);
+        const key = String(e.key || '').toLowerCase();
+
+        // Em campos de formulário, preservar atalhos básicos de edição
+        if (targetEditavel && e.ctrlKey && (key === 'c' || key === 'v' || key === 'a' || key === 'x')) {
+            return true;
+        }
+
         // Ctrl+C, Ctrl+V, Ctrl+A, Ctrl+X
-        if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'a' || e.key === 'x')) {
+        if (e.ctrlKey && (key === 'c' || key === 'v' || key === 'a' || key === 'x')) {
             e.preventDefault();
             console.warn('⚠️ Atalho de teclado bloqueado - Propriedade Intelectual Protegida');
             return false;
         }
         
         // Ctrl+U (visualizar código fonte)
-        if (e.ctrlKey && e.key === 'u') {
+        if (e.ctrlKey && key === 'u') {
             e.preventDefault();
             console.warn('⚠️ Visualização de código fonte bloqueada - Propriedade Intelectual Protegida');
             return false;
         }
         
         // Ctrl+S (salvar página)
-        if (e.ctrlKey && e.key === 's') {
+        if (e.ctrlKey && key === 's') {
             e.preventDefault();
             console.warn('⚠️ Salvamento bloqueado - Propriedade Intelectual Protegida');
             return false;
@@ -831,14 +867,14 @@ function inicializarProtecaoContraCopias() {
         }
         
         // Ctrl+Shift+I (DevTools)
-        if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+        if (e.ctrlKey && e.shiftKey && key === 'i') {
             e.preventDefault();
             console.warn('⚠️ DevTools bloqueado - Propriedade Intelectual Protegida');
             return false;
         }
         
         // Ctrl+Shift+C (DevTools Inspector)
-        if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+        if (e.ctrlKey && e.shiftKey && key === 'c') {
             e.preventDefault();
             console.warn('⚠️ Inspector bloqueado - Propriedade Intelectual Protegida');
             return false;
