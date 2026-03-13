@@ -503,6 +503,12 @@ class CalculadoraPodium {
         const taxa3 = this.extrairPercentual(this.taxa3Input) / 100 || 0.8;
         const taxa4 = this.extrairPercentual(this.taxa4Input) / 100 || 0.5;
         
+        // Manter saída zerada enquanto meta/ticket não forem preenchidos
+        if (meta <= 0 || ticket <= 0) {
+            this.atualizarDisplays(meta, ticket, 0, taxa1, taxa2, taxa3, taxa4, 0, 0, 0, 0);
+            return;
+        }
+
         // Realizar cálculos
         const projetos = Math.ceil(meta / ticket);
         const negociações = Math.ceil(projetos / taxa4);
@@ -570,6 +576,9 @@ class CalculadoraPodium {
      */
     salvarDados(dados) {
         try {
+            if (dados.meta <= 0 || dados.ticket <= 0) {
+                return;
+            }
             localStorage.setItem('calculadora-podium-dados', JSON.stringify(dados));
         } catch (e) {
             console.warn('Não foi possível salvar os dados no localStorage:', e);
@@ -584,8 +593,8 @@ class CalculadoraPodium {
             const dados = localStorage.getItem('calculadora-podium-dados');
             if (dados) {
                 const parsed = JSON.parse(dados);
-                this.metaInput.value = this.formatarMoedaInputValue(parsed.meta || 80000);
-                this.ticketInput.value = this.formatarMoedaInputValue(parsed.ticket || 15000);
+                this.metaInput.value = parsed.meta > 0 ? this.formatarMoedaInputValue(parsed.meta) : '';
+                this.ticketInput.value = parsed.ticket > 0 ? this.formatarMoedaInputValue(parsed.ticket) : '';
             }
         } catch (e) {
             console.warn('Não foi possível carregar os dados do localStorage:', e);
@@ -596,8 +605,8 @@ class CalculadoraPodium {
      * Reseta todos os valores para os padrões
      */
     resetar() {
-        this.metaInput.value = this.formatarMoedaInputValue(80000);
-        this.ticketInput.value = this.formatarMoedaInputValue(15000);
+        this.metaInput.value = '';
+        this.ticketInput.value = '';
         this.taxa1Input.value = '20%';
         this.taxa2Input.value = '70%';
         this.taxa3Input.value = '80%';

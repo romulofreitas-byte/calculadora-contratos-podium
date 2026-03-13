@@ -39,14 +39,14 @@
             <div class="input-group">
                 <div class="input-item">
                     <label for="meta">Meta de Faturamento no Período (R$)</label>
-                    <input type="text" id="meta" value="R$ 80.000" step="1000">
+                    <input type="text" id="meta" placeholder="Ex.: R$ 80.000" step="1000">
                     <div class="input-description">Quanto você quer faturar no período desejado?</div>
                 </div>
                 
                 <div class="input-item">
                     <label for="ticket">Ticket Médio do Projeto (R$)</label>
-                    <input type="text" id="ticket" value="R$ 15.000" step="500">
-                    <div class="input-description">Qual é o valor médio de um projeto que você fecha?</div>
+                    <input type="text" id="ticket" placeholder="Ex.: R$ 15.000" step="500">
+                    <div class="input-description">Qual é o valor total médio de um projeto/contrato que você fecha? (não é valor mensal)</div>
                 </div>
             </div>
             
@@ -58,7 +58,7 @@
                 </tr>
                 <tr>
                     <td><strong>Quantidade de Projetos a Fechar</strong></td>
-                    <td class="projects-cell"><span id="projetos">6</span> projetos</td>
+                    <td class="projects-cell"><span id="projetos">0</span> projetos</td>
                     <td>Calculado automaticamente (Meta ÷ Ticket Médio)</td>
                 </tr>
             </table>
@@ -128,27 +128,27 @@
             <div class="step-breakdown">
                 <div class="step-item">
                     <div class="step-label">1️⃣ Contratos a Fechar</div>
-                    <div class="step-value"><span id="passo1">6</span> contratos</div>
+                    <div class="step-value"><span id="passo1">0</span> contratos</div>
                 </div>
                 
                 <div class="step-item">
                     <div class="step-label">2️⃣ Negociações Necessárias</div>
-                    <div class="step-value"><span id="passo2">12</span> negociações</div>
+                    <div class="step-value"><span id="passo2">0</span> negociações</div>
                 </div>
                 
                 <div class="step-item">
                     <div class="step-label">3️⃣ R2s Necessárias</div>
-                    <div class="step-value"><span id="passo3">15</span> reuniões R2</div>
+                    <div class="step-value"><span id="passo3">0</span> reuniões R2</div>
                 </div>
                 
                 <div class="step-item">
                     <div class="step-label">4️⃣ R1s Necessárias</div>
-                    <div class="step-value"><span id="passo4">22</span> reuniões R1</div>
+                    <div class="step-value"><span id="passo4">0</span> reuniões R1</div>
                 </div>
                 
                 <div class="step-item featured-step">
                     <div class="step-label">5️⃣ Ligações Efetivadas com Decisor Necessárias</div>
-                    <div class="step-value"><span id="passo5">110</span> ligações efetivadas</div>
+                    <div class="step-value"><span id="passo5">0</span> ligações efetivadas</div>
                 </div>
             </div>
             
@@ -175,7 +175,7 @@
             
             <div class="result-main">
                 <div class="result-number-wrapper">
-                    <div class="result-number"><span id="resultado">110</span></div>
+                    <div class="result-number"><span id="resultado">0</span></div>
                     <div class="result-label">ligações efetivadas</div>
                     <div class="result-badge">com o decisor</div>
                 </div>
@@ -195,15 +195,15 @@
             <div class="result-description">
                 <div class="desc-item">
                     <span class="desc-label">Meta do Período</span>
-                    <span class="desc-value">R$ <span id="meta-display">80.000</span></span>
+                    <span class="desc-value">R$ <span id="meta-display">0</span></span>
                 </div>
                 <div class="desc-item">
                     <span class="desc-label">Ticket Médio</span>
-                    <span class="desc-value">R$ <span id="ticket-display">15.000</span></span>
+                    <span class="desc-value">R$ <span id="ticket-display">0</span></span>
                 </div>
                 <div class="desc-item">
                     <span class="desc-label">Contratos</span>
-                    <span class="desc-value"><span id="contratos-display">6</span> contratos</span>
+                    <span class="desc-value"><span id="contratos-display">0</span> contratos</span>
                 </div>
             </div>
         </div>
