@@ -397,16 +397,57 @@ class CalculadoraPodium {
         // Adicionar listeners para recalcular quando os valores mudam
         this.metaInput.addEventListener('input', (e) => this.formatarMoedaInput(e, this.metaInput));
         this.ticketInput.addEventListener('input', (e) => this.formatarMoedaInput(e, this.ticketInput));
-        this.taxa1Input.addEventListener('input', () => this.calcular());
-        this.taxa2Input.addEventListener('input', () => this.calcular());
-        this.taxa3Input.addEventListener('input', () => this.calcular());
-        this.taxa4Input.addEventListener('input', () => this.calcular());
+        this.taxa1Input.addEventListener('input', () => this.handleTaxaInput(this.taxa1Input));
+        this.taxa2Input.addEventListener('input', () => this.handleTaxaInput(this.taxa2Input));
+        this.taxa3Input.addEventListener('input', () => this.handleTaxaInput(this.taxa3Input));
+        this.taxa4Input.addEventListener('input', () => this.handleTaxaInput(this.taxa4Input));
+
+        // Normalizar campos de taxa no padrão "N%"
+        this.normalizarTaxasInputs();
         
         // Calcular na carga da página
         window.addEventListener('load', () => this.calcular());
         
         // Calcular imediatamente
         this.calcular();
+    }
+
+    /**
+     * Mantém o input de taxa no formato percentual (ex: 20%)
+     */
+    handleTaxaInput(input) {
+        input.value = this.formatarPercentualInputValue(input.value);
+        this.calcular();
+    }
+
+    /**
+     * Extrai e limita percentual entre 1 e 100
+     */
+    extrairPercentual(input) {
+        const numeros = String(input.value || '').replace(/\D/g, '');
+        if (!numeros) return 0;
+        const valor = parseInt(numeros, 10);
+        return Math.min(100, Math.max(1, valor));
+    }
+
+    /**
+     * Formata texto para padrão "N%"
+     */
+    formatarPercentualInputValue(valor) {
+        const numeros = String(valor || '').replace(/\D/g, '');
+        if (!numeros) return '';
+        const percentual = Math.min(100, Math.max(1, parseInt(numeros, 10)));
+        return `${percentual}%`;
+    }
+
+    /**
+     * Aplica formatação percentual aos quatro campos
+     */
+    normalizarTaxasInputs() {
+        this.taxa1Input.value = this.formatarPercentualInputValue(this.taxa1Input.value);
+        this.taxa2Input.value = this.formatarPercentualInputValue(this.taxa2Input.value);
+        this.taxa3Input.value = this.formatarPercentualInputValue(this.taxa3Input.value);
+        this.taxa4Input.value = this.formatarPercentualInputValue(this.taxa4Input.value);
     }
     
     /**
@@ -457,10 +498,10 @@ class CalculadoraPodium {
         // Obter valores dos inputs
         const meta = this.extrairValorNumerico(this.metaInput);
         const ticket = this.extrairValorNumerico(this.ticketInput);
-        const taxa1 = parseFloat(this.taxa1Input.value) / 100 || 0.2;
-        const taxa2 = parseFloat(this.taxa2Input.value) / 100 || 0.7;
-        const taxa3 = parseFloat(this.taxa3Input.value) / 100 || 0.8;
-        const taxa4 = parseFloat(this.taxa4Input.value) / 100 || 0.5;
+        const taxa1 = this.extrairPercentual(this.taxa1Input) / 100 || 0.2;
+        const taxa2 = this.extrairPercentual(this.taxa2Input) / 100 || 0.7;
+        const taxa3 = this.extrairPercentual(this.taxa3Input) / 100 || 0.8;
+        const taxa4 = this.extrairPercentual(this.taxa4Input) / 100 || 0.5;
         
         // Realizar cálculos
         const projetos = Math.ceil(meta / ticket);
@@ -545,10 +586,6 @@ class CalculadoraPodium {
                 const parsed = JSON.parse(dados);
                 this.metaInput.value = this.formatarMoedaInputValue(parsed.meta || 20000);
                 this.ticketInput.value = this.formatarMoedaInputValue(parsed.ticket || 5000);
-                this.taxa1Input.value = parsed.taxa1 || 20;
-                this.taxa2Input.value = parsed.taxa2 || 70;
-                this.taxa3Input.value = parsed.taxa3 || 80;
-                this.taxa4Input.value = parsed.taxa4 || 50;
             }
         } catch (e) {
             console.warn('Não foi possível carregar os dados do localStorage:', e);
@@ -561,10 +598,10 @@ class CalculadoraPodium {
     resetar() {
         this.metaInput.value = this.formatarMoedaInputValue(20000);
         this.ticketInput.value = this.formatarMoedaInputValue(5000);
-        this.taxa1Input.value = 20;
-        this.taxa2Input.value = 70;
-        this.taxa3Input.value = 80;
-        this.taxa4Input.value = 50;
+        this.taxa1Input.value = '20%';
+        this.taxa2Input.value = '70%';
+        this.taxa3Input.value = '80%';
+        this.taxa4Input.value = '50%';
         this.calcular();
     }
     
@@ -622,10 +659,6 @@ class CalculadoraPodium {
         
         if (params.has('meta')) this.metaInput.value = this.formatarMoedaInputValue(parseInt(params.get('meta')));
         if (params.has('ticket')) this.ticketInput.value = this.formatarMoedaInputValue(parseInt(params.get('ticket')));
-        if (params.has('taxa1')) this.taxa1Input.value = params.get('taxa1');
-        if (params.has('taxa2')) this.taxa2Input.value = params.get('taxa2');
-        if (params.has('taxa3')) this.taxa3Input.value = params.get('taxa3');
-        if (params.has('taxa4')) this.taxa4Input.value = params.get('taxa4');
         
         this.calcular();
     }
