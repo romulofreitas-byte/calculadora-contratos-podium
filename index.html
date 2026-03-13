@@ -29,7 +29,7 @@
         
         <div class="section">
             <div class="instructions">
-                <p><strong>📋 INSTRUÇÕES DE USO:</strong> Preencha os campos em AMARELO com suas informações reais. A calculadora determinará automaticamente quantas ligações você precisa fazer para atingir sua meta de faturamento no período escolhido (seja para uma semana, mês, trimestre ou ano).</p>
+                <p><strong>📋 Como usar:</strong> preencha meta, ticket e taxas reais do seu funil. O cálculo mostra primeiro as <strong>ligações com decisor (efetivadas)</strong> e depois estima as <strong>ligações totais</strong> para execução no período.</p>
             </div>
         </div>
         
@@ -50,18 +50,20 @@
                 </div>
             </div>
             
-            <table>
-                <tr>
-                    <th>Informação</th>
-                    <th>Valor</th>
-                    <th>Descrição</th>
-                </tr>
-                <tr>
-                    <td><strong>Quantidade de Projetos a Fechar</strong></td>
-                    <td class="projects-cell"><span id="projetos">0</span> projetos</td>
-                    <td>Calculado automaticamente (Meta ÷ Ticket Médio)</td>
-                </tr>
-            </table>
+            <div class="table-scroll">
+                <table>
+                    <tr>
+                        <th>Informação</th>
+                        <th>Valor</th>
+                        <th>Descrição</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Quantidade de Contratos</strong></td>
+                        <td class="projects-cell"><span id="projetos">0</span> contratos</td>
+                        <td>Calculado automaticamente (Meta ÷ Ticket Médio)</td>
+                    </tr>
+                </table>
+            </div>
         </div>
         
         <div class="section">
@@ -69,21 +71,21 @@
             
             <div class="input-group">
                 <div class="input-item">
-                    <label for="taxa1">Ligações Efetivadas com Decisor → R1 Realizada (%)</label>
+                    <label for="taxa1">Ligações com Decisor → R1 Realizada (%)</label>
                     <input type="text" id="taxa1" inputmode="numeric" placeholder="Ex.: 20%" title="Digite em percentual. Ex.: 20% = 2 a cada 10">
-                    <div class="input-description">De cada 10 ligações efetivadas (falando com decisor), quantas viram reuniões R1 realizadas?</div>
+                    <div class="input-description">De cada 10 ligações com decisor, quantas viram R1 realizada?</div>
                 </div>
                 
                 <div class="input-item">
                     <label for="taxa2">R1 → R2 Realizada (%)</label>
                     <input type="text" id="taxa2" inputmode="numeric" placeholder="Ex.: 70%" title="Digite em percentual. Ex.: 70% = 7 a cada 10">
-                    <div class="input-description">De cada 10 R1s realizadas (não no-shows), quantas viram R2?</div>
+                    <div class="input-description">De cada 10 R1 realizadas, quantas avançam para R2?</div>
                 </div>
                 
                 <div class="input-item">
                     <label for="taxa3">R2 → Negociação (%)</label>
                     <input type="text" id="taxa3" inputmode="numeric" placeholder="Ex.: 80%" title="Digite em percentual. Ex.: 80% = 8 a cada 10">
-                    <div class="input-description">De cada 10 R2s realizadas (não no-shows), quantas entram em negociação?</div>
+                    <div class="input-description">De cada 10 R2 realizadas, quantas entram em negociação?</div>
                 </div>
                 
                 <div class="input-item">
@@ -93,37 +95,39 @@
                 </div>
             </div>
             
-            <table class="conversion-table">
-                <tr>
-                    <th>Etapa do Processo</th>
-                    <th>Taxa de Conversão</th>
-                    <th>Descrição</th>
-                </tr>
-                <tr>
-                    <td>Ligações Efetivadas → R1 Realizada</td>
-                    <td><span id="taxa1-display">20</span><span class="percent-sign">%</span></td>
-                    <td>Ligações com decisor que viram reuniões de levantamento de necessidades</td>
-                </tr>
-                <tr>
-                    <td>R1 Realizada → R2 Realizada</td>
-                    <td><span id="taxa2-display">70</span><span class="percent-sign">%</span></td>
-                    <td>R1s que avançaram para reunião de apresentação de proposta</td>
-                </tr>
-                <tr>
-                    <td>R2 Realizada → Negociação</td>
-                    <td><span id="taxa3-display">80</span><span class="percent-sign">%</span></td>
-                    <td>R2s que entraram em fase de negociação</td>
-                </tr>
-                <tr>
-                    <td>Negociação → Contrato Fechado</td>
-                    <td><span id="taxa4-display">50</span><span class="percent-sign">%</span></td>
-                    <td>Negociações que resultaram em contratos assinados</td>
-                </tr>
-            </table>
+            <div class="table-scroll">
+                <table class="conversion-table">
+                    <tr>
+                        <th>Etapa do Processo</th>
+                        <th>Taxa</th>
+                        <th>Descrição</th>
+                    </tr>
+                    <tr>
+                        <td>Ligações com decisor → R1</td>
+                        <td><span id="taxa1-display">20</span><span class="percent-sign">%</span></td>
+                        <td>Ligações com decisor que viram R1 de diagnóstico</td>
+                    </tr>
+                    <tr>
+                        <td>R1 → R2</td>
+                        <td><span id="taxa2-display">70</span><span class="percent-sign">%</span></td>
+                        <td>R1 que avançaram para apresentação de proposta</td>
+                    </tr>
+                    <tr>
+                        <td>R2 → Negociação</td>
+                        <td><span id="taxa3-display">80</span><span class="percent-sign">%</span></td>
+                        <td>R2 que entraram em negociação</td>
+                    </tr>
+                    <tr>
+                        <td>Negociação → Contrato</td>
+                        <td><span id="taxa4-display">50</span><span class="percent-sign">%</span></td>
+                        <td>Negociações que viraram contrato assinado</td>
+                    </tr>
+                </table>
+            </div>
         </div>
         
         <div class="section">
-            <div class="section-title">🔄 CÁLCULO REGRESSIVO - QUANTAS LIGAÇÕES PRECISO FAZER?</div>
+            <div class="section-title">🔄 CÁLCULO REGRESSIVO (DE CONTRATOS PARA LIGAÇÕES)</div>
             
             <div class="step-breakdown">
                 <div class="step-item">
@@ -147,22 +151,22 @@
                 </div>
                 
                 <div class="step-item featured-step">
-                    <div class="step-label">5️⃣ Ligações Efetivadas com Decisor Necessárias</div>
-                    <div class="step-value"><span id="passo5">0</span> ligações efetivadas</div>
+                    <div class="step-label">5️⃣ Ligações com Decisor Necessárias (Efetivadas)</div>
+                    <div class="step-value"><span id="passo5">0</span> ligações com decisor</div>
                 </div>
             </div>
             
             <div class="info-box-premium">
                 <div class="info-box-icon">💡</div>
                 <div class="info-box-content">
-                    <h4>Importante sobre Ligação Efetivada</h4>
-                    <p>Este número representa <strong>ligações efetivadas com o decisor</strong> (falando diretamente com quem decide). Na prática, você precisará fazer mais ligações para atingir este número, considerando:</p>
+                    <h4>Leitura correta do número final</h4>
+                    <p>O resultado mostra <strong>ligações com decisor (efetivadas)</strong>. Para chegar nisso no dia a dia, você fará mais tentativas de contato.</p>
                     <ul>
-                        <li>Ligações não atendidas ou caíram na caixa postal</li>
-                        <li>Ligações atendidas por secretárias ou outras pessoas</li>
-                        <li>Ligações onde a pessoa certa não estava disponível</li>
+                        <li>Não atendidas e caixa postal</li>
+                        <li>Filtros antes do decisor (secretária, assistente, recepção)</li>
+                        <li>Decisor indisponível no momento da ligação</li>
                     </ul>
-                    <p class="info-box-highlight">Considerando uma taxa típica de 30-40% de conversão de "ligações totais" para "ligações efetivadas", você precisará fazer aproximadamente <strong>2 a 3 vezes mais ligações totais</strong>.</p>
+                    <p class="info-box-highlight">No planejamento, usamos a premissa de <strong>3x</strong>: ligações totais = ligações com decisor x 3.</p>
                 </div>
             </div>
         </div>
@@ -176,19 +180,19 @@
             <div class="result-main">
                 <div class="result-number-wrapper">
                     <div class="result-number"><span id="resultado">0</span></div>
-                    <div class="result-label">ligações efetivadas</div>
-                    <div class="result-badge">com o decisor</div>
+                    <div class="result-label">ligações com decisor</div>
+                    <div class="result-badge">volume efetivado</div>
                 </div>
                 
                 <div class="result-subtitle">
-                    <p>Para fechar sua meta de faturamento no período escolhido</p>
+                    <p>Volume efetivado necessário para bater sua meta no período escolhido</p>
                 </div>
             </div>
             
             <div class="result-warning">
                 <div class="warning-icon">⚠️</div>
                 <div class="warning-content">
-                    <strong>Importante:</strong> Este número representa ligações efetivadas (falando com o decisor). Na prática, você precisará fazer <strong>mais ligações</strong> considerando as que não são atendidas ou atendidas por outras pessoas (secretárias, assistentes, etc.). Considere fazer aproximadamente <strong>2 a 3 vezes mais ligações totais</strong> para atingir este número de ligações efetivadas.
+                    <strong>Importante:</strong> este resultado é de ligações com decisor. Para execução diária, considere também as ligações totais (discagens). No planejamento abaixo, usamos a referência prática de <strong>3x</strong> para transformar efetivadas em totais.
                 </div>
             </div>
             
@@ -207,31 +211,166 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Seção Escuderia Pódium -->
-        <div class="escuderia-section">
-            <div class="escuderia-content">
-                <div class="escuderia-icon">🏁</div>
-                <div class="escuderia-text">
-                    <h3>🚀 Destrave Suas Ligações em 48h</h3>
-                    <p><strong>Workshop Destrava Ligações</strong> - Treinamento prático para transformar medo de ligar em reuniões qualificadas com método e segurança.</p>
-                    <p>✨ <strong>2 módulos ao vivo</strong> • 3h cada • Script pronto • Ferramentas exclusivas</p>
-                    <div class="escuderia-highlights">
-                        <span class="highlight-item">📞 Ligações reais ao vivo</span>
-                        <span class="highlight-item">🧠 Controle de ansiedade</span>
-                        <span class="highlight-item">🎯 Script de cold call personalizado</span>
-                        <span class="highlight-item">⚡ Feedback em tempo real</span>
-                    </div>
+
+        <section class="section planning-section">
+            <div class="section-title">📅 PLANEJAMENTO DE EXECUÇÃO ATÉ A META</div>
+
+            <div class="planning-input-wrap">
+                <div class="input-item">
+                    <label for="prazo-meses">Prazo para bater a meta (meses)</label>
+                    <input type="number" id="prazo-meses" min="1" step="1" placeholder="Ex.: 3">
+                    <div class="input-description">A data final será calculada a partir de hoje com base neste prazo.</div>
                 </div>
             </div>
-            <a href="https://workshop.mundopodium.com.br/" target="_blank" rel="noopener noreferrer" class="btn-escuderia">
-                🏁 Garantir vaga no Workshop
-            </a>
-            <div class="escuderia-footer">
-                <p><strong>6ª Edição aberta:</strong> De R$ 497 por R$ 297,99</p>
-                <p>25 de Março • 13h • Sem replay</p>
+
+            <div class="planning-summary-card">
+                <h3>Resumo do objetivo</h3>
+                <p id="objetivo-resumo">Defina meta, ticket e prazo para gerar o planejamento.</p>
             </div>
-        </div>
+
+            <div class="planning-grid">
+                <div class="planning-item">
+                    <span class="planning-label">Ligações totais estimadas (discagens)</span>
+                    <span class="planning-value"><span id="ligacoes-totais">0</span> ligações</span>
+                </div>
+
+                <div class="planning-item">
+                    <span class="planning-label">Ligações com decisor (efetivadas)</span>
+                    <span class="planning-value"><span id="ligacoes-decisor">0</span> ligações</span>
+                </div>
+
+                <div class="planning-item">
+                    <span class="planning-label">Ligações totais por dia útil de prospecção</span>
+                    <span class="planning-value"><span id="ligacoes-por-dia">0</span> ligações/dia</span>
+                </div>
+            </div>
+
+            <div class="planning-interactive">
+                <div class="interactive-accordion planning-accordion">
+                    <article class="accordion-item">
+                        <button class="accordion-trigger" aria-expanded="false">
+                            <span>Premissas importantes do cálculo</span>
+                            <span class="accordion-icon">+</span>
+                        </button>
+                        <div class="accordion-content">
+                            <ul class="planning-list">
+                                <li><strong>Só vale ligação efetivada:</strong> conta apenas quando você fala com o decisor.</li>
+                                <li><strong>Ligações totais (3x):</strong> incluem não atendidas, caixa postal, filtros e contatos sem acesso ao decisor.</li>
+                                <li><strong>No-show:</strong> reuniões agendadas e não realizadas impactam o funil e devem estar refletidas nas taxas de conversão.</li>
+                                <li><strong>Ligações por dia:</strong> são distribuídas com base no total de ligações e em 3 dias de prospecção por semana.</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <article class="accordion-item">
+                        <button class="accordion-trigger" aria-expanded="false">
+                            <span>Como o número é calculado</span>
+                            <span class="accordion-icon">+</span>
+                        </button>
+                        <div class="accordion-content planning-formula-content">
+                            <p><strong>Data final estimada:</strong> <span id="planejamento-data-final">-</span></p>
+                            <p><strong>Semanas consideradas (arredondadas para cima):</strong> <span id="planejamento-semanas">0</span></p>
+                            <p><strong>Dias de prospecção (3 por semana):</strong> <span id="planejamento-dias">0</span> dias</p>
+                            <p><strong>Fórmula de volume:</strong> <span id="planejamento-ligacoes-totais-formula">0</span> totais = <span id="planejamento-ligacoes-decisor-formula">0</span> com decisor x 3</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+        
+        <section class="workshop-section">
+            <div class="workshop-background-glow"></div>
+            <div class="workshop-header">
+                <div class="workshop-badge-row">
+                    <span class="workshop-badge">Complemento oficial da calculadora</span>
+                    <span class="workshop-badge workshop-badge-ghost">Treinamento prático e ao vivo</span>
+                </div>
+                <h2>Workshop Destrava Ligações: da estratégia para a execução real</h2>
+                <p>A calculadora te entrega o volume ideal de ligações. O Workshop te entrega o método prático para executar com confiança, consistência e previsibilidade.</p>
+            </div>
+
+            <div class="workshop-tabs" role="tablist" aria-label="Conteúdo do workshop">
+                <button class="workshop-tab active" role="tab" aria-selected="true" aria-controls="workshopPanelVisao" data-workshop-target="workshopPanelVisao">Visão geral</button>
+                <button class="workshop-tab" role="tab" aria-selected="false" aria-controls="workshopPanelModulos" data-workshop-target="workshopPanelModulos">Módulos</button>
+                <button class="workshop-tab" role="tab" aria-selected="false" aria-controls="workshopPanelProva" data-workshop-target="workshopPanelProva">Prova social</button>
+            </div>
+
+            <div class="workshop-main-grid">
+                <div class="workshop-panel-wrap">
+                    <div class="workshop-panel active" id="workshopPanelVisao" role="tabpanel">
+                        <article class="workshop-transformation">
+                            <h3>Da intenção para a execução</h3>
+                            <div class="transform-row">
+                                <div class="transform-item">
+                                    <span class="transform-label">Antes</span>
+                                    <p>Trava para ligar e insegurança no pitch.</p>
+                                </div>
+                                <div class="transform-arrow">→</div>
+                                <div class="transform-item">
+                                    <span class="transform-label">Depois</span>
+                                    <p>Ritmo de prospecção com script, clareza e consistência.</p>
+                                </div>
+                            </div>
+                            <ul class="workshop-benefits">
+                                <li>Ligações reais ao vivo</li>
+                                <li>Acompanhamento direto</li>
+                                <li>Feedback imediato</li>
+                                <li>Prática orientada para resultado</li>
+                            </ul>
+                        </article>
+                    </div>
+
+                    <div class="workshop-panel" id="workshopPanelModulos" role="tabpanel">
+                        <div class="workshop-modules">
+                            <h3>Dois módulos complementares para sair da teoria e entrar em ação</h3>
+                            <div class="workshop-module-cards">
+                                <article class="workshop-module-card">
+                                    <span class="module-step">Módulo 1</span>
+                                    <h4>Preparação e Fundação</h4>
+                                    <p>Organização de metas, controle de ansiedade, estudo de mercado e construção de um script de cold call com lógica comercial.</p>
+                                </article>
+                                <article class="workshop-module-card">
+                                    <span class="module-step">Módulo 2</span>
+                                    <h4>Sala de Ligação</h4>
+                                    <p>Prática real com acompanhamento direto, ligações ao vivo e correções em tempo real para acelerar sua curva de evolução.</p>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="workshop-panel" id="workshopPanelProva" role="tabpanel">
+                        <article class="workshop-testimonial-inline">
+                            <h3>Depoimento de quem aplicou</h3>
+                            <p>Confira o print do depoimento do Igor Carvalhosa sobre a experiência no Workshop Destrava Ligações.</p>
+                            <button type="button" class="btn-testimonial-toggle" id="igorDepoimentoTrigger" aria-expanded="false" aria-controls="igorDepoimentoViewer">
+                                Ver depoimento em destaque
+                            </button>
+                        </article>
+                    </div>
+                </div>
+
+                <aside class="workshop-proof-card">
+                    <span class="proof-pill">Depoimento real</span>
+                    <img src="public/depoimento-igor-carvalhosa.png" alt="Depoimento de Igor Carvalhosa sobre o Workshop Destrava Ligações" class="workshop-proof-image">
+                    <p class="proof-caption">Igor Carvalhosa</p>
+                </aside>
+            </div>
+
+            <div id="igorDepoimentoViewer" class="workshop-testimonial-viewer" aria-hidden="true">
+                <div class="workshop-testimonial-viewer-header">
+                    <h3>Depoimento - Igor Carvalhosa</h3>
+                    <button type="button" class="workshop-testimonial-close" id="igorDepoimentoClose" aria-label="Fechar depoimento em destaque">Fechar</button>
+                </div>
+                <img src="public/depoimento-igor-carvalhosa.png" alt="Print de depoimento de Igor Carvalhosa sobre o Workshop Destrava Ligações" class="workshop-testimonial-image-expanded">
+            </div>
+
+            <div class="workshop-cta-row">
+                <a href="https://workshop.mundopodium.com.br/" target="_blank" rel="noopener noreferrer" class="btn-workshop" id="btnWorkshopHero">
+                    Garantir vaga no Workshop
+                </a>
+                <p class="workshop-note">Formato online ao vivo com abordagem prática para acelerar sua execução comercial.</p>
+            </div>
+        </section>
         
         <div class="community-section">
             <div class="community-content">
@@ -247,75 +386,115 @@
             </a>
         </div>
         
-        <div class="section">
-            <div class="section-title">📚 GLOSSÁRIO DE TERMOS</div>
-            
-            <div class="glossary">
-                <div class="glossary-item">
-                    <h4>🏁 R1 (Reunião 1)</h4>
-                    <p><strong>Reunião de Levantamento de Necessidades</strong> - Primeira reunião comercial onde você descobre as dores, necessidades e desafios do cliente potencial. É aqui que você faz as perguntas certas para entender se há um fit entre sua solução e o problema do cliente.</p>
+        <section class="section knowledge-section">
+            <div class="section-title">📚 HUB COMERCIAL INTERATIVO</div>
+            <p class="knowledge-intro">Troque leitura passiva por execução inteligente: navegue pelas trilhas para entender conceitos, operação e ritmo de ação.</p>
+
+            <div class="knowledge-tabs" role="tablist" aria-label="Trilhas de conhecimento comercial">
+                <button class="knowledge-tab active" id="tabFundamentos" role="tab" aria-selected="true" aria-controls="panelFundamentos" data-tab-target="panelFundamentos">Fundamentos</button>
+                <button class="knowledge-tab" id="tabOperacao" role="tab" aria-selected="false" aria-controls="panelOperacao" data-tab-target="panelOperacao">Operação</button>
+                <button class="knowledge-tab" id="tabExecucao" role="tab" aria-selected="false" aria-controls="panelExecucao" data-tab-target="panelExecucao">Execução</button>
+            </div>
+
+            <div class="knowledge-panels">
+                <div class="knowledge-panel active" id="panelFundamentos" role="tabpanel" aria-labelledby="tabFundamentos">
+                    <div class="interactive-accordion">
+                        <article class="accordion-item">
+                            <button class="accordion-trigger" aria-expanded="true">
+                                <span>🏁 R1 e R2 no Método Pódium</span>
+                                <span class="accordion-icon">+</span>
+                            </button>
+                            <div class="accordion-content open">
+                                <p><strong>R1:</strong> levantamento de necessidades para entender dores e cenário do cliente.</p>
+                                <p><strong>R2:</strong> apresentação de proposta e avanço para negociação com base no diagnóstico da R1.</p>
+                            </div>
+                        </article>
+                        <article class="accordion-item">
+                            <button class="accordion-trigger" aria-expanded="false">
+                                <span>📞 O que é ligação efetivada</span>
+                                <span class="accordion-icon">+</span>
+                            </button>
+                            <div class="accordion-content">
+                                <p>Só conta quando você fala com o decisor. Ligações perdidas, caixa postal e intermediações não entram na conta final.</p>
+                                <p>Na prática, considere volume total de 2 a 3 vezes maior para atingir o número de ligações efetivadas.</p>
+                            </div>
+                        </article>
+                        <article class="accordion-item">
+                            <button class="accordion-trigger" aria-expanded="false">
+                                <span>💰 Ticket médio e meta de faturamento</span>
+                                <span class="accordion-icon">+</span>
+                            </button>
+                            <div class="accordion-content">
+                                <p>Ticket médio é o valor por contrato/projeto fechado. Meta é o total desejado no período escolhido.</p>
+                                <p>A calculadora usa os dois números para definir quantos contratos e atividades anteriores são necessários.</p>
+                            </div>
+                        </article>
+                    </div>
                 </div>
-                
-                <div class="glossary-item">
-                    <h4>🎯 R2 (Reunião 2)</h4>
-                    <p><strong>Reunião de Apresentação de Proposta</strong> - Segunda reunião comercial onde você apresenta sua solução, proposta comercial e negocia os termos. É aqui que você "fecha" o cliente com base nas necessidades identificadas na R1.</p>
+
+                <div class="knowledge-panel" id="panelOperacao" role="tabpanel" aria-labelledby="tabOperacao">
+                    <div class="interactive-accordion">
+                        <article class="accordion-item">
+                            <button class="accordion-trigger" aria-expanded="false">
+                                <span>📊 Taxas de conversão por etapa</span>
+                                <span class="accordion-icon">+</span>
+                            </button>
+                            <div class="accordion-content">
+                                <p>As taxas representam o percentual de avanço entre etapas do funil: Ligação → R1 → R2 → Negociação → Contrato.</p>
+                                <p>Quando uma taxa melhora, sua demanda de ligações cai de forma expressiva.</p>
+                            </div>
+                        </article>
+                        <article class="accordion-item">
+                            <button class="accordion-trigger" aria-expanded="false">
+                                <span>🔄 Como funciona o cálculo regressivo</span>
+                                <span class="accordion-icon">+</span>
+                            </button>
+                            <div class="accordion-content">
+                                <p>Você começa no objetivo final (contratos) e volta etapa por etapa para descobrir o esforço comercial real necessário.</p>
+                            </div>
+                        </article>
+                        <article class="accordion-item">
+                            <button class="accordion-trigger" aria-expanded="false">
+                                <span>🏁 Método Pódium na rotina</span>
+                                <span class="accordion-icon">+</span>
+                            </button>
+                            <div class="accordion-content">
+                                <p>É um sistema de vendas com etapas claras, métricas e previsibilidade para sair da improvisação e ganhar controle.</p>
+                            </div>
+                        </article>
+                    </div>
                 </div>
-                
-                <div class="glossary-item">
-                    <h4>📞 Ligações Efetivadas</h4>
-                    <p><strong>Ligações que Resultaram em Conversa com o Decisor</strong> - São aquelas ligações onde você conseguiu falar diretamente com a pessoa certa (o decisor). NÃO contam: chamadas perdidas, atendimentos por secretárias, voicemails ou mensagens deixadas. É fundamental falar com quem tem poder de decisão.</p>
-                    <p><strong>⚠️ Importante:</strong> Na prática, você precisará fazer significativamente mais ligações totais para conseguir este número de ligações efetivadas. Apenas cerca de 30-40% das ligações totais resultam em conversas efetivadas com o decisor.</p>
-                </div>
-                
-                <div class="glossary-item">
-                    <h4>💰 Ticket Médio</h4>
-                    <p><strong>Valor Médio de um Projeto</strong> - É o valor médio que você recebe por projeto/contrato fechado. Use este valor para calcular quantos projetos precisa fechar para atingir sua meta de faturamento.</p>
-                </div>
-                
-                <div class="glossary-item">
-                    <h4>🎯 Meta de Faturamento</h4>
-                    <p><strong>Valor que Você Quer Faturar</strong> - É o valor total que você quer receber no período escolhido (semana, mês, trimestre ou ano). Pode ser baseado em suas despesas, objetivos pessoais ou metas da empresa.</p>
-                </div>
-                
-                <div class="glossary-item">
-                    <h4>📊 Taxa de Conversão</h4>
-                    <p><strong>Percentual de Sucesso em Cada Etapa</strong> - É a porcentagem de pessoas que avançam de uma etapa para a próxima no seu funil comercial. Por exemplo: se de 10 ligações, 3 viram R1, sua taxa de conversão é 30%.</p>
-                </div>
-                
-                <div class="glossary-item">
-                    <h4>🔄 Cálculo Regressivo</h4>
-                    <p><strong>Contagem de Trás para Frente</strong> - Método usado para descobrir quantas ações você precisa fazer para atingir sua meta. Começa pelo resultado desejado (contratos) e vai calculando quantas ações anteriores são necessárias.</p>
-                </div>
-                
-                <div class="glossary-item">
-                    <h4>🏁 Método Pódium</h4>
-                    <p><strong>Sistema de Vendas Estruturado</strong> - Metodologia comercial que organiza o processo de vendas em etapas claras e mensuráveis, permitindo previsibilidade e controle sobre os resultados comerciais.</p>
+
+                <div class="knowledge-panel" id="panelExecucao" role="tabpanel" aria-labelledby="tabExecucao">
+                    <div class="tips-premium-grid">
+                        <article class="tip-premium-card">
+                            <h4>Qualidade de ligação</h4>
+                            <p>Foque em conversas com ICP real e contexto. Volume sem direção gera desgaste e baixa conversão.</p>
+                        </article>
+                        <article class="tip-premium-card">
+                            <h4>Ritmo e consistência</h4>
+                            <p>Defina blocos fixos de prospecção no calendário. Resultado vem de repetição com critério.</p>
+                        </article>
+                        <article class="tip-premium-card">
+                            <h4>Gestão de pipeline</h4>
+                            <p>Acompanhe diariamente quantos leads estão em cada etapa para antecipar gargalos do mês.</p>
+                        </article>
+                        <article class="tip-premium-card">
+                            <h4>Ajuste de taxas</h4>
+                            <p>Use dados reais da sua operação. Atualizar conversões melhora o planejamento e a assertividade da meta.</p>
+                        </article>
+                        <article class="tip-premium-card">
+                            <h4>Aprendizado contínuo</h4>
+                            <p>Revisite objeções, refine script e eleve sua performance de reunião em reunião.</p>
+                        </article>
+                        <article class="tip-premium-card tip-premium-featured">
+                            <h4>Execução guiada no Workshop</h4>
+                            <p>Quando quiser acelerar confiança e performance, use o Workshop Destrava Ligações como camada prática da calculadora.</p>
+                        </article>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="section">
-            <div class="section-title">💡 DICAS IMPORTANTES</div>
-            
-            <div class="tips">
-                <h3>Maximize sua previsibilidade comercial:</h3>
-                <ol>
-                    <li><strong>Ligações Efetivadas:</strong> São aquelas em que você consegue falar com o decisor (pessoa com poder de decisão). Não contam chamadas perdidas, atendedores, secretárias ou voicemails. <strong>Importante:</strong> Para cada ligação efetivada, você precisará fazer aproximadamente 2-3 ligações totais, considerando as que não são atendidas ou atendidas por outras pessoas.</li>
-                    
-                    <li><strong>Ajuste as Taxas:</strong> As taxas de conversão podem variar conforme seu nicho, posicionamento e experiência. Comece com os valores sugeridos e ajuste conforme sua realidade.</li>
-                    
-                    <li><strong>Quanto Maior a Taxa, Menos Ligações:</strong> Investir em melhorar sua abordagem de vendas reduz significativamente o número de ligações necessárias.</li>
-                    
-                    <li><strong>Registre Suas Conversões Reais:</strong> Mantenha um registro detalhado de suas conversões em cada etapa para melhorar a previsibilidade mês a mês.</li>
-                    
-                    <li><strong>Consistência é a Chave:</strong> Lembre-se: "Mais pessoas desistem do que fracassam." A consistência nas ligações é o que separa os pilotos de sucesso dos que ficam no pit stop.</li>
-                    
-                    <li><strong>Qualidade vs. Quantidade:</strong> Não é apenas sobre fazer ligações, é sobre fazer ligações QUALIFICADAS para leads que realmente se encaixam no seu ICP.</li>
-                    
-                    <li><strong>Acompanhe Seu Pipeline:</strong> Sempre saiba quantas pessoas estão em cada etapa do seu funil comercial para manter a previsibilidade.</li>
-                </ol>
-            </div>
-        </div>
+        </section>
         
         <div class="footer">
             <p>🏁 Calculadora de Ligações Pódium | Método Pódium | Desenvolvido para os Pilotos da Comunidade</p>

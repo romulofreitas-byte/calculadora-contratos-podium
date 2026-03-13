@@ -366,6 +366,7 @@ class CalculadoraPodium {
         this.taxa2Input = document.getElementById('taxa2');
         this.taxa3Input = document.getElementById('taxa3');
         this.taxa4Input = document.getElementById('taxa4');
+        this.prazoMesesInput = document.getElementById('prazo-meses');
         
         // Elementos de exibição
         this.projetos = document.getElementById('projetos');
@@ -385,6 +386,17 @@ class CalculadoraPodium {
         this.passo5 = document.getElementById('passo5');
         
         this.resultado = document.getElementById('resultado');
+
+        // Elementos da seção de planejamento
+        this.objetivoResumo = document.getElementById('objetivo-resumo');
+        this.ligacoesTotais = document.getElementById('ligacoes-totais');
+        this.ligacoesDecisor = document.getElementById('ligacoes-decisor');
+        this.ligacoesPorDia = document.getElementById('ligacoes-por-dia');
+        this.planejamentoDataFinal = document.getElementById('planejamento-data-final');
+        this.planejamentoSemanas = document.getElementById('planejamento-semanas');
+        this.planejamentoDias = document.getElementById('planejamento-dias');
+        this.planejamentoLigacoesTotaisFormula = document.getElementById('planejamento-ligacoes-totais-formula');
+        this.planejamentoLigacoesDecisorFormula = document.getElementById('planejamento-ligacoes-decisor-formula');
         
         // Inicializar
         this.init();
@@ -401,6 +413,9 @@ class CalculadoraPodium {
         this.taxa2Input.addEventListener('input', () => this.handleTaxaInput(this.taxa2Input));
         this.taxa3Input.addEventListener('input', () => this.handleTaxaInput(this.taxa3Input));
         this.taxa4Input.addEventListener('input', () => this.handleTaxaInput(this.taxa4Input));
+        if (this.prazoMesesInput) {
+            this.prazoMesesInput.addEventListener('input', () => this.handlePrazoMesesInput());
+        }
 
         // Normalizar campos de taxa no padrão "N%"
         this.normalizarTaxasInputs();
@@ -449,6 +464,16 @@ class CalculadoraPodium {
         this.taxa3Input.value = this.formatarPercentualInputValue(this.taxa3Input.value);
         this.taxa4Input.value = this.formatarPercentualInputValue(this.taxa4Input.value);
     }
+
+    /**
+     * Mantém o input de prazo apenas com meses inteiros positivos
+     */
+    handlePrazoMesesInput() {
+        if (!this.prazoMesesInput) return;
+        const numeros = String(this.prazoMesesInput.value || '').replace(/\D/g, '');
+        this.prazoMesesInput.value = numeros ? String(Math.max(1, parseInt(numeros, 10))) : '';
+        this.calcular();
+    }
     
     /**
      * Formata o input de moeda brasileira
@@ -490,6 +515,15 @@ class CalculadoraPodium {
         const valor = input.value.replace(/[^\d]/g, '');
         return valor === '' ? 0 : parseInt(valor);
     }
+
+    /**
+     * Extrai o prazo em meses informado pelo usuário
+     */
+    extrairPrazoMeses() {
+        if (!this.prazoMesesInput) return 0;
+        const meses = parseInt(this.prazoMesesInput.value, 10);
+        return Number.isFinite(meses) && meses > 0 ? meses : 0;
+    }
     
     /**
      * Função principal de cálculo
@@ -525,12 +559,12 @@ class CalculadoraPodium {
      */
     atualizarDisplays(meta, ticket, projetos, taxa1, taxa2, taxa3, taxa4, negociações, r2s, r1s, ligações) {
         // Atualizar quantidade de projetos
-        this.projetos.textContent = projetos;
+        this.projetos.textContent = this.formatarInteiro(projetos);
         
         // Atualizar displays de meta e ticket
         this.metaDisplay.textContent = this.formatarMoeda(meta);
         this.ticketDisplay.textContent = this.formatarMoeda(ticket);
-        this.contratosDisplay.textContent = projetos;
+        this.contratosDisplay.textContent = this.formatarInteiro(projetos);
         
         // Atualizar displays de taxas
         this.taxa1Display.textContent = (taxa1 * 100).toFixed(0);
@@ -539,14 +573,17 @@ class CalculadoraPodium {
         this.taxa4Display.textContent = (taxa4 * 100).toFixed(0);
         
         // Atualizar passos do cálculo regressivo
-        this.passo1.textContent = projetos;
-        this.passo2.textContent = negociações;
-        this.passo3.textContent = r2s;
-        this.passo4.textContent = r1s;
-        this.passo5.textContent = ligações;
+        this.passo1.textContent = this.formatarInteiro(projetos);
+        this.passo2.textContent = this.formatarInteiro(negociações);
+        this.passo3.textContent = this.formatarInteiro(r2s);
+        this.passo4.textContent = this.formatarInteiro(r1s);
+        this.passo5.textContent = this.formatarInteiro(ligações);
         
         // Atualizar resultado final
-        this.resultado.textContent = ligações;
+        this.resultado.textContent = this.formatarInteiro(ligações);
+
+        // Atualizar seção de planejamento
+        this.atualizarPlanejamento(meta, ligações);
         
         // Salvar no localStorage para persistência
         this.salvarDados({
@@ -555,8 +592,80 @@ class CalculadoraPodium {
             taxa1: taxa1 * 100,
             taxa2: taxa2 * 100,
             taxa3: taxa3 * 100,
-            taxa4: taxa4 * 100
+            taxa4: taxa4 * 100,
+            prazoMeses: this.extrairPrazoMeses()
         });
+    }
+
+    /**
+     * Atualiza os dados de execução de ligações até a data final
+     */
+    atualizarPlanejamento(meta, ligacoesComDecisor) {
+        if (!this.objetivoResumo || !this.ligacoesTotais || !this.ligacoesDecisor || !this.ligacoesPorDia) {
+            return;
+        }
+
+        const meses = this.extrairPrazoMeses();
+
+        if (meta <= 0 || ligacoesComDecisor <= 0 || meses <= 0) {
+            this.objetivoResumo.textContent = 'Defina meta, ticket e prazo para gerar o planejamento.';
+            this.ligacoesTotais.textContent = '0';
+            this.ligacoesDecisor.textContent = '0';
+            this.ligacoesPorDia.textContent = '0';
+            this.atualizarDetalhamentoPlanejamento('-', 0, 0, 0, 0);
+            return;
+        }
+
+        const hoje = new Date();
+        const dataFinal = new Date(hoje);
+        dataFinal.setMonth(dataFinal.getMonth() + meses);
+
+        const diffMs = Math.max(0, dataFinal.getTime() - hoje.getTime());
+        const semanas = Math.max(1, Math.ceil(diffMs / (1000 * 60 * 60 * 24 * 7)));
+        const diasProspeccao = semanas * 3;
+        const ligacoesTotais = ligacoesComDecisor * 3;
+        const ligacoesPorDia = Math.ceil(ligacoesTotais / diasProspeccao);
+        const labelMeses = meses === 1 ? 'mês' : 'meses';
+
+        this.objetivoResumo.textContent = `Meta de R$ ${this.formatarMoeda(meta)} em ${meses} ${labelMeses}, com execução prevista até ${dataFinal.toLocaleDateString('pt-BR')}.`;
+        this.ligacoesTotais.textContent = this.formatarInteiro(ligacoesTotais);
+        this.ligacoesDecisor.textContent = this.formatarInteiro(ligacoesComDecisor);
+        this.ligacoesPorDia.textContent = this.formatarInteiro(ligacoesPorDia);
+        this.atualizarDetalhamentoPlanejamento(
+            dataFinal.toLocaleDateString('pt-BR'),
+            semanas,
+            diasProspeccao,
+            ligacoesTotais,
+            ligacoesComDecisor
+        );
+    }
+
+    /**
+     * Atualiza bloco textual com as premissas numéricas do planejamento
+     */
+    atualizarDetalhamentoPlanejamento(dataFinal, semanas, diasProspeccao, ligacoesTotais, ligacoesComDecisor) {
+        if (this.planejamentoDataFinal) {
+            this.planejamentoDataFinal.textContent = dataFinal;
+        }
+        if (this.planejamentoSemanas) {
+            this.planejamentoSemanas.textContent = this.formatarInteiro(semanas);
+        }
+        if (this.planejamentoDias) {
+            this.planejamentoDias.textContent = this.formatarInteiro(diasProspeccao);
+        }
+        if (this.planejamentoLigacoesTotaisFormula) {
+            this.planejamentoLigacoesTotaisFormula.textContent = this.formatarInteiro(ligacoesTotais);
+        }
+        if (this.planejamentoLigacoesDecisorFormula) {
+            this.planejamentoLigacoesDecisorFormula.textContent = this.formatarInteiro(ligacoesComDecisor);
+        }
+    }
+
+    /**
+     * Formata inteiros para facilitar leitura (pt-BR)
+     */
+    formatarInteiro(valor) {
+        return Number(valor || 0).toLocaleString('pt-BR');
     }
     
     /**
@@ -595,6 +704,9 @@ class CalculadoraPodium {
                 const parsed = JSON.parse(dados);
                 this.metaInput.value = parsed.meta > 0 ? this.formatarMoedaInputValue(parsed.meta) : '';
                 this.ticketInput.value = parsed.ticket > 0 ? this.formatarMoedaInputValue(parsed.ticket) : '';
+                if (this.prazoMesesInput) {
+                    this.prazoMesesInput.value = parsed.prazoMeses > 0 ? String(parsed.prazoMeses) : '';
+                }
             }
         } catch (e) {
             console.warn('Não foi possível carregar os dados do localStorage:', e);
@@ -611,6 +723,9 @@ class CalculadoraPodium {
         this.taxa2Input.value = '70%';
         this.taxa3Input.value = '80%';
         this.taxa4Input.value = '50%';
+        if (this.prazoMesesInput) {
+            this.prazoMesesInput.value = '';
+        }
         this.calcular();
     }
     
@@ -769,9 +884,6 @@ function inicializarProtecaoContraCopias() {
  * Inicializar a calculadora quando o DOM estiver pronto
  */
 document.addEventListener('DOMContentLoaded', () => {
-    // Inicializar proteção contra cópias
-    inicializarProtecaoContraCopias();
-    
     // Inicializar captura de leads
     const capturaLeads = new CapturadeLeads();
     
@@ -805,6 +917,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Inicializar interações da camada premium (tabs e accordion)
+    inicializarConteudoInterativo();
 });
 
 /**
@@ -836,7 +951,7 @@ function inicializarVercelAnalytics() {
  */
 function trackCalculatorUsage() {
     // Track quando valores são alterados
-    const inputs = ['meta', 'ticket', 'taxa1', 'taxa2', 'taxa3', 'taxa4'];
+    const inputs = ['meta', 'ticket', 'taxa1', 'taxa2', 'taxa3', 'taxa4', 'prazo-meses'];
     
     inputs.forEach(inputId => {
         const input = document.getElementById(inputId);
@@ -877,6 +992,149 @@ function trackLeadCaptureEvents() {
                 });
             }
         });
+    }
+
+    const workshopButton = document.getElementById('btnWorkshopHero');
+    if (workshopButton) {
+        workshopButton.addEventListener('click', () => {
+            if (typeof window.va === 'function') {
+                window.va('track', 'Workshop CTA Click', {
+                    source: 'workshop-hero'
+                });
+            }
+        });
+    }
+}
+
+/**
+ * Inicializa tabs e accordions da seção de conteúdo interativo
+ */
+function inicializarConteudoInterativo() {
+    const tabs = Array.from(document.querySelectorAll('.knowledge-tab'));
+    const panels = Array.from(document.querySelectorAll('.knowledge-panel'));
+    const accordionTriggers = Array.from(document.querySelectorAll('.accordion-trigger'));
+    const workshopTabs = Array.from(document.querySelectorAll('.workshop-tab'));
+    const workshopPanels = Array.from(document.querySelectorAll('.workshop-panel'));
+
+    if (tabs.length > 0 && panels.length > 0) {
+        const ativarTab = (tab) => {
+            const targetId = tab.getAttribute('data-tab-target');
+            const targetPanel = document.getElementById(targetId);
+            if (!targetPanel) return;
+
+            tabs.forEach((btn) => {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-selected', 'false');
+                btn.setAttribute('tabindex', '-1');
+            });
+
+            panels.forEach((panel) => {
+                panel.classList.remove('active');
+            });
+
+            tab.classList.add('active');
+            tab.setAttribute('aria-selected', 'true');
+            tab.setAttribute('tabindex', '0');
+            targetPanel.classList.add('active');
+            tab.focus();
+        };
+
+        tabs.forEach((tab, index) => {
+            tab.addEventListener('click', () => ativarTab(tab));
+            tab.addEventListener('keydown', (event) => {
+                if (event.key === 'ArrowRight') {
+                    event.preventDefault();
+                    const nextTab = tabs[(index + 1) % tabs.length];
+                    ativarTab(nextTab);
+                }
+                if (event.key === 'ArrowLeft') {
+                    event.preventDefault();
+                    const prevTab = tabs[(index - 1 + tabs.length) % tabs.length];
+                    ativarTab(prevTab);
+                }
+            });
+        });
+    }
+
+    if (accordionTriggers.length > 0) {
+        accordionTriggers.forEach((trigger) => {
+            trigger.addEventListener('click', () => {
+                const content = trigger.nextElementSibling;
+                if (!content || !content.classList.contains('accordion-content')) return;
+
+                const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+                trigger.setAttribute('aria-expanded', String(!isExpanded));
+                content.classList.toggle('open', !isExpanded);
+            });
+
+            trigger.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    trigger.click();
+                }
+            });
+        });
+    }
+
+    if (workshopTabs.length > 0 && workshopPanels.length > 0) {
+        const ativarWorkshopTab = (tab) => {
+            const targetId = tab.getAttribute('data-workshop-target');
+            const targetPanel = document.getElementById(targetId);
+            if (!targetPanel) return;
+
+            workshopTabs.forEach((btn) => {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-selected', 'false');
+            });
+            workshopPanels.forEach((panel) => panel.classList.remove('active'));
+
+            tab.classList.add('active');
+            tab.setAttribute('aria-selected', 'true');
+            targetPanel.classList.add('active');
+        };
+
+        workshopTabs.forEach((tab, index) => {
+            tab.addEventListener('click', () => ativarWorkshopTab(tab));
+            tab.addEventListener('keydown', (event) => {
+                if (event.key === 'ArrowRight') {
+                    event.preventDefault();
+                    ativarWorkshopTab(workshopTabs[(index + 1) % workshopTabs.length]);
+                } else if (event.key === 'ArrowLeft') {
+                    event.preventDefault();
+                    ativarWorkshopTab(workshopTabs[(index - 1 + workshopTabs.length) % workshopTabs.length]);
+                }
+            });
+        });
+    }
+
+    const depoimentoViewer = document.getElementById('igorDepoimentoViewer');
+    const depoimentoTrigger = document.getElementById('igorDepoimentoTrigger');
+    const depoimentoClose = document.getElementById('igorDepoimentoClose');
+
+    if (depoimentoViewer && depoimentoTrigger && depoimentoClose) {
+        const abrirDepoimento = () => {
+            depoimentoViewer.classList.add('open');
+            depoimentoViewer.setAttribute('aria-hidden', 'false');
+            depoimentoTrigger.setAttribute('aria-expanded', 'true');
+        };
+
+        const fecharDepoimento = () => {
+            depoimentoViewer.classList.remove('open');
+            depoimentoViewer.setAttribute('aria-hidden', 'true');
+            depoimentoTrigger.setAttribute('aria-expanded', 'false');
+        };
+
+        depoimentoTrigger.addEventListener('click', () => {
+            const aberto = depoimentoViewer.classList.contains('open');
+            if (aberto) {
+                fecharDepoimento();
+                return;
+            }
+            abrirDepoimento();
+            depoimentoViewer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+
+        depoimentoClose.addEventListener('click', fecharDepoimento);
     }
 }
 
